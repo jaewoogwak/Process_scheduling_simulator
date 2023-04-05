@@ -3,4 +3,4 @@
 
 # 곽 재 우 나쁘다
 
-https://img.shields.io/badge/</img src="React-61DAFB?style=flat&logo=React&logoColor=white"/>
+<img src="https://img.shields.io/badge/파이썬-61DAFB?style=flat&logo=React&logoColor=white"/>
