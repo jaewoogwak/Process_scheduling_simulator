@@ -12,10 +12,10 @@ NTT={'p1':0, 'p2':0, 'p3':0, 'p4':0, 'p5':0}
 totalT=20
 processN=5
 
-# coreN=4
-# pCore=2
-# eCore=2
-# coreReady=[]
+coreN=4
+pCore=2
+eCore=2
+coreReady=[]
 
 
 def calculate(FinishedP):
@@ -56,7 +56,6 @@ def SRTN():
     for result in range(processN):
         n=processName[result]
         print("프로세서 %d WT : %d , TT : %d , NTT : %d" % (result+1, waitingT[n], turnAroundT[n], NTT[n]))
-  
 
 SRTN()
 print(3/2) # 소수 계산 고치기
