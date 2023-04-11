@@ -109,24 +109,28 @@ class SPN:
         '''
         Sort processes according to the Process ID
         '''
-        print("ID\tAT\tBT\tC\tCT\tTT\tWT")
+        print("ID\tAT\tBT\tCT\tTT\tWT")
 
         for i in range(len(process_data)):
             for j in range(len(process_data[i])):
-
+                if j == 3:
+                    continue
                 print(process_data[i][j], end='\t')
             print()
 
-        print(f'Average Turnaround Time: {average_turnaround_time}')
-
+        print(f'Average Response Time: {average_turnaround_time}')
         print(f'Average Waiting Time: {average_waiting_time}')
 
+def main():
+    '''no_of_processes = int(input("Enter number of processes: "))
+    arrival_time = list(map(int, input("Enter Arrival Times: ").split()))
+    burst_time = list(map(int, input("Enter Burst Times: ").split()))'''
+    no_of_processes = 5
+    arrival_time = [0,1,3,5,6]
+    burst_time = [3,7,2,5,3]
 
+    spn = SPN()
+    spn.processData(no_of_processes, arrival_time, burst_time)
 
-no_of_processes = int(input("Enter number of processes: "))
-arrival_time = list(map(int, input("Enter Arrival Times: ").split()))
-burst_time = list(map(int, input("Enter Burst Times: ").split()))
-
-spn = SPN()
-spn.processData(no_of_processes, arrival_time, burst_time)
+main()
 
