@@ -1,14 +1,14 @@
 class SPN:
 
-    def processData(self, no_of_processes):
+    def processData(self, no_of_processes, AT:list, BT:list):
         process_data = []
+        count = 1
         for i in range(no_of_processes):
             temporary = []
-            process_id = int(input("Enter Process ID: "))
-
-            arrival_time = int(input(f"Enter Arrival Time for Process {process_id}: "))
-
-            burst_time = int(input(f"Enter Burst Time for Process {process_id}: "))
+            process_id = count
+            arrival_time = AT[count-1]
+            burst_time = BT[count-1]
+            count += 1
             temporary.extend([process_id, arrival_time, burst_time, 0])
             '''
             '0' is the state of the process. 0 means not executed and 1 means execution complete
@@ -122,8 +122,11 @@ class SPN:
         print(f'Average Waiting Time: {average_waiting_time}')
 
 
-if __name__ == "__main__":
-    no_of_processes = int(input("Enter number of processes: "))
-    spn = SPN()
-    spn.processData(no_of_processes)
+
+no_of_processes = int(input("Enter number of processes: "))
+arrival_time = list(map(int, input("Enter Arrival Times: ").split()))
+burst_time = list(map(int, input("Enter Burst Times: ").split()))
+
+spn = SPN()
+spn.processData(no_of_processes, arrival_time, burst_time)
 
