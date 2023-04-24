@@ -10,6 +10,7 @@ def findFirstArrived(arrival_time):
 	return pos
 
 
+
 def searchReadyQueue(arrival_time, current_time, completed):
 	arrived = []
 	# print("completed", completed)
@@ -38,17 +39,10 @@ def checkTerminated(burst_time, terminated):
 				print("*** P",i+1, "실행 완료 ***")
 
 
-def run(burst_time, pos, core):
-    
+def run(burst_time, pos):
 	if burst_time[pos] > 0:
-		if core == 'E':
-			burst_time[pos] -= 1
-		else:
-			burst_time[pos] -= 2
+		burst_time[pos] -= 1
 
-	if burst_time[pos] < 0:
-		burst_time[pos] = 0
-  
 
 def sortByArrival(arrival_time, N):
 	sorted(arrival_time)
@@ -121,24 +115,6 @@ def calSchedulingInfo(scheduling_info):
 	normalized_tt = float(turnaround_time[pos] / bt_temp[pos])
 
 
-# 시동을 거는 0함수
-def operateCore(core):
-    if core == 'E':
-        return 0.1
-        
-    else:
-        return 0.5
-
-
-# 전력 소비하는 함수, 1초당 1W or 3W
-def consumePower(core):    
-    if core == "E":
-        return 1
-    
-    else:
-        return 3
-
-
 def HRRN(N, arrival_time, burst_time, processor=1):
 	total_bt = 0
 	sum_wt = 0
@@ -151,59 +127,42 @@ def HRRN(N, arrival_time, burst_time, processor=1):
 	normalized_tt = [0] * N 
 	bt_temp = list(burst_time)
 	process = []
-	consumedPower = 0
-	core = 'E'
  
 	
 	total_bt = initProcess(process, burst_time, total_bt, N)
 	pos = findFirstArrived(arrival_time)
 
-	current_time = 0
-	consumedPower += operateCore(core)
+	current_time = 1
 	
-	readyQueue = []
-	
-
-	while(current_time <= total_bt):
+	while(current_time < total_bt):
 		print("---",current_time,"초 ---")
-
-		if len(terminated) == N:
-			print("종료")
-			break
-
+		
 		# Ready Queue에 들어온 프로세스 확인하기
 		searchReadyQueue(arrival_time, current_time, completed)
 
 		# Response Ratio가 가장 높은 프로세스 찾기
-		if arrival_time[pos] <current_time:
-			pos = findHighestResponseRatio(N, completed, arrival_time, current_time-1, burst_time, pos)
+		pos = findHighestResponseRatio(N, completed, arrival_time, current_time, burst_time, pos)
 		
-			# 완료된 프로세스 있는지 확인하기
-			checkCompletedProcess(completed, burst_time, terminated)
+		# 완료된 프로세스 있는지 확인하기
+		checkCompletedProcess(completed, burst_time, terminated)
 		
-			# 프로세스 실행
-			run(burst_time, pos, core)
-   			
-      		# 전력 소비
-			consumedPower += consumePower(core)
+		# 프로세스 실행
+		run(burst_time, pos)
 	
-		
 		
 		# 현재 시간 += 1
 		current_time += 1
-
-		
 
 		# 스케줄링 진행 정보 계산
 		scheduling_info = current_time, arrival_time, burst_time, waiting_time, turnaround_time, normalized_tt, pos, sum_tt, sum_wt, bt_temp
 		calSchedulingInfo(scheduling_info)
 		
-		print(process[pos],"실행 중..", "남은 실행 시간", burst_time[pos],  "현재 전력 소비량: ", consumedPower, "\n")
+		print(process[pos],"실행 중..", "남은 실행 시간", burst_time[pos], "\n")
 		# 실행 완료된 프로세스 terminated에 넣기
 		checkTerminated(burst_time, terminated)
 		
 		
-		
+
 
 
 

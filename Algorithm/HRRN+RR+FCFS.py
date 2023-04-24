@@ -249,10 +249,10 @@ if __name__ == "__main__":
     burst_time = [3, 7, 2, 5, 3]
 
     #FCFS 함수 호출
-    FCFS(process, arrival_time, burst_time)
+    # FCFS(process, arrival_time, burst_time)
 
     #RR함수 호출
-    RR(process, arrival_time, burst_time)
+    # RR(process, arrival_time, burst_time)
     
     #HRRN 함수 호출
     HRRN(process, arrival_time, burst_time)
