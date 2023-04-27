@@ -6,6 +6,13 @@ def isFinished(completed):
     return True
 
 
+# 기본 로직
+# 1. 종료할 프로세스 있는지 확인 
+# 2. ready Q 넣기
+# 3. ready Q에서 빼기
+# 4. 프로세스에게 프로세서 할당 
+# 5. 실행
+
 def FCFS(arrival_time, burst_time):
     N = 5
     core = 1
