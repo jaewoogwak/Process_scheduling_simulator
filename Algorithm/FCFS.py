@@ -1,25 +1,77 @@
-processList = {'p1':[0, 3, 0, 0, 0], 'p2':[1, 7, 0, 0, 0], 'p4':[5, 5, 0, 0, 0], 'p5':[6, 3, 0, 0, 0], 'p3':[3, 2, 0, 0, 0]}
+def isFinished(completed):
+    for i in range(len(completed)):
+        if not completed[i]:
+            return False
+        
+    return True
 
-for key, value in processList.items():
-    processList[key] = {'AT': value[0], 'BT': value[1], 'WT': value[2], 'TT': value[3], 'NTT': value[4]}
 
-arrangeList = [{'Process': key, 'AT': value['AT'], 'BT': value['BT'], 'WT': 0, 'TT': 0, 'NTT': 0} for key, value in sorted(processList.items(), key=lambda e: e[1]['AT'])]
+def FCFS(arrival_time, burst_time):
+    N = 5
+    core = 1
+    readyQueue = []
+    processorInfo = [True, "E", -1]
+    processor = [processorInfo[:] for _ in range(core)]
+    completed = [False for _ in range(N)]
+    allocated = [False for _ in range(N)]
+    currentTime = 0
+    
+    while not isFinished(completed):
+        readyQueue = []
+        p = 0
+        
+        print("---",currentTime,"초---", burst_time)
+        
+        # 종료할 프로세스가 있는지 확인
+        for i in range(core):
+            p = processor[i][2]
+        
+            if burst_time[p] <= 0 and processor[i][2] != -1:
+                completed[p] = True
+                print("*** 프로세스", processor[i][2], " 종료 ***")
+                processor[i][0] = True
+                processor[i][2] = -1
+        
+        # ready queue에 넣기
+        for i in range(N):
+            if arrival_time[i] <= currentTime and not completed[i] and not allocated[i]:
+                readyQueue.append(i)
+        
+        print(readyQueue)
+        
+        # ready queue에서 빼기
+        for i in range(core):
+            if len(readyQueue) > 0: 
+                p = readyQueue.pop(0)
 
-for i in range(len(arrangeList)):
-    if i == 0:
-        arrangeList[i]['WT'] = arrangeList[i]['AT']
-    else:
-        wt = arrangeList[i-1]['AT'] + arrangeList[i-1]['BT'] + arrangeList[i-1]['WT']
-        arrangeList[i]['WT'] = wt - arrangeList[i]['AT'] if wt >= arrangeList[i]['AT'] else 0
+            # 프로세서가 사용 가능하면
+            print("프로세서", processor)
+            if processor[i][0]:
+                # 아직 프로세서 할당 못받은 프로세스라면, 할당 받음
+                if not allocated[p]:
+                    processor[i][2] = p
+                    processor[i][0] = False
+                    allocated[p] = True
+        
+        # 프로세서 할당 받은 프로세스는 실행함
+        for i in range(core):
+            p = processor[i][2]   
+            if not processor[i][0]:
+                burst_time[p] -= 1
+                print("p",p, "실행")
 
-    arrangeList[i]['TT'] = arrangeList[i]['BT'] + arrangeList[i]['WT']
-    arrangeList[i]['NTT'] = arrangeList[i]['TT'] / arrangeList[i]['BT'] if arrangeList[i]['BT'] != 0 else 0
+        currentTime += 1
+    
+    
+    
+    
 
-Fulltime = arrangeList[-1]['AT'] + arrangeList[-1]['BT'] + arrangeList[-1]['WT']
+if __name__ == "__main__":
+    process = 5
+    processor = 2
+    
+    arrival_time = [0, 1, 3, 5, 6]
+    burst_time = [3, 7, 2, 5, 3]
 
-print("Arranged List")
-print("Process\tAT\tBT\tWT\tTT\tNTT")
-for i in arrangeList:
-    print("{}\t{}\t{}\t{}\t{}\t{}".format(i['Process'], i['AT'], i['BT'], i['WT'], i['TT'], round(i['NTT'], 2)))
-
-print("Fulltime: ", Fulltime)
+    
+    FCFS(arrival_time, burst_time)
