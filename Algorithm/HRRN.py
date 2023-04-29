@@ -1,218 +1,145 @@
-# HRRN algorithm
-def findFirstArrived(arrival_time):
-	pos = 0
-	at = arrival_time[0]
-	for i in range(1, len(arrival_time)):
-		if arrival_time[i] < at:
-			pos = i
-			at = arrival_time[i]
-			
-	return pos
-
-
-def searchReadyQueue(arrival_time, current_time, completed):
-	arrived = []
-	# print("completed", completed)
-	for i in range(len(arrival_time)):
-		if not completed[i] and arrival_time[i] <= current_time:
-			arrived.append(i)
-	
-	return arrived
-
-
-def checkCompletedProcess(completed, burst_time, terminated):
-	for i in range(len(burst_time)):
-		if burst_time[i] == 0:
-			
-			
-			completed[i] = True
-			
-			# print("P", i+1, "프로세스 실행 완료")
-
-
-def checkTerminated(burst_time, terminated):
-	for i in range(len(burst_time)): 
-		if burst_time[i] == 0:
-			if i not in terminated:
-				terminated.append(i)
-				print("*** P",i+1, "실행 완료 ***")
-
-
-def run(burst_time, pos, core):
-    
-	if burst_time[pos] > 0:
-		if core == 'E':
-			burst_time[pos] -= 1
-		else:
-			burst_time[pos] -= 2
-
-	if burst_time[pos] < 0:
-		burst_time[pos] = 0
-  
-
-def sortByArrival(arrival_time, N):
-	sorted(arrival_time)
-
-
-def initProcess(process, burst_time, total_bt, N):
-	for i in range(0, N):
-		process.append("P" + str(i+1))
-		total_bt += burst_time[i]
-	
-	return total_bt
+def isFinished(completed):
+    for i in range(len(completed)):
+        if not completed[i]:
+            return False
+        
+    return True
 
 
 def getResponseRatio(burst_time, current_time, arrival_time, pos):
-		return ((burst_time[pos] + (current_time - arrival_time[pos])) / burst_time[pos])
+	return ((burst_time[pos] + (current_time - arrival_time[pos])) / burst_time[pos])
 
 
-def printResult(scheduling_info):
-		process, arrival_time, burst_time, waiting_time, turnaround_time, normalized_tt, pos = scheduling_info
-		print(process[pos], "\t\t", 
-			arrival_time[pos], "\t\t", 
-			burst_time[pos], "\t\t",
-			waiting_time[pos], "\t\t",
-			turnaround_time[pos], "\t\t",
-			"{0:.6f}".format(normalized_tt))
-
-	
-def findHighestResponseRatio(N, completed, arrival_time, current_time, burst_time, prevPos):
-	resopnse_ratio = -9999
-	rt, pos = 0, 0
-	
-	ready_queue =  searchReadyQueue(arrival_time, current_time, completed)
-	for i in range(0, N):
-		if burst_time[prevPos] > 0:
-			# print("아직 프로세서", prevPos, "실행중!")
-			return prevPos
-			
-		# 아직 실행하지 않은 프로세스이면서 ready_queue에 존재한다면
-		if not completed[i] and i in ready_queue and burst_time[i] > 0:
-			
-			# 응답률(Response ratio) 계산
-			rt = getResponseRatio(burst_time, current_time, arrival_time, i)
-			if resopnse_ratio < rt:
-				resopnse_ratio = rt
-				pos = i
-				
-	print(pos+1,"번 프로세스가 Response Ratio가 가장 높습니다.")
-	return pos
-
-
-def calSchedulingInfo(scheduling_info):
-	current_time, arrival_time, burst_time, waiting_time, turnaround_time, normalized_tt, pos, sum_tt, sum_wt, bt_temp = scheduling_info
-	N = len(arrival_time)
-
-	# 반환시간(TT) = 현재시간 - Ready queue에 도착한 시간
-	turnaround_time[pos] = current_time - arrival_time[pos]
-
-	# 대기시간(WT) = 반환시간(TT) - 실행시간(BT)
-	waiting_time[pos] = turnaround_time[pos] - burst_time[pos]
-		
-	# 평균 반환시간 계산
-	sum_tt += turnaround_time[pos]
-	avg_tt = sum_tt / N
-
-	# 평균 대기시간 계산
-	sum_wt += waiting_time[pos]
-	avg_wt = sum_wt / N
-	
-	# Normalized TT = TT / BT
-	normalized_tt = float(turnaround_time[pos] / bt_temp[pos])
-
-
-# 시동을 거는 0함수
-def operateCore(core):
-    if core == 'E':
-        return 0.1
-        
-    else:
-        return 0.5
-
-
-# 전력 소비하는 함수, 1초당 1W or 3W
-def consumePower(core):    
-    if core == "E":
-        return 1
+def HRRN(arrival_time, burst_time):
+    N = 5
+    core = 2
+    readyQueue = []
+    # 프로세스 할당 받은 여부, 코어의 종류, 현재 실행중인 프로세스 번호, 현재 프로세서 on/off
+    # on = True, off = False
+    processorInfo = [False, "E", -1]
+    processor = [processorInfo[:] for _ in range(core)]
+    prevState = [False for _ in range(core)]
+    process = [p for p in range(1, N+1)]
+    completed = [False for _ in range(N)]
+    allocated = [False for _ in range(N)]
+    burstTimeTemp = burst_time[:]
+    waitingTime = [0] * N
+    turnaroundTime = [0] * N
+    normalizedTT = [0] * N 
     
-    else:
-        return 3
+    currentTime = 0
+    consumedPower = 0
+    temp = []
+    
+    while not isFinished(completed):
+        readyQueue = []
+        p = 0
+        
+        print("---",currentTime,"초---", burst_time)
+        
+        # 종료할 프로세스가 있는지 확인
+        for i in range(core):
+            p = processor[i][2]
+        
+            if burst_time[p] <= 0:
+                if processor[i][2] != -1:
+                    completed[p] = True
+                    print("*** 프로세스", processor[i][2]+1, " 종료 ***")
+                    turnaroundTime[p] = currentTime - arrival_time[p]
+                    processor[i][0] = False
+                    processor[i][2] = -1
+                    
+        if isFinished(completed):
+            print("종료!")
+            break
+        
+        # ready queue에 넣기
+        for i in range(N):
+            if arrival_time[i] <= currentTime and not completed[i] and not allocated[i]:
+                responseRatio = getResponseRatio(burst_time, currentTime, arrival_time, i)
+                readyQueue.append((i, responseRatio))
+        
+        # ready queue에서 빼기
+        temp = readyQueue[:]
+        for i in range(core):
+            if not processor[i][0]:
+                if len(readyQueue) > 0:
+                    maxResponseRatio = 0
+                    pos = 0
+                    for j in range(len(readyQueue)):
+                        if readyQueue[j][1] > maxResponseRatio:
+                            maxResponseRatio = readyQueue[j][1]
+                            pos = j
+                            
+                    p, responseRatio = readyQueue.pop(pos)
 
+                    # 아직 프로세서 할당 못받은 프로세스라면, 할당 받음
+                    if not allocated[p] and processor[i][0] == False and p != -1:
+                        processor[i][2] = p
+                        processor[i][0] = True
+                        print("프로세스",p+1,"는 프로세서를",i+1,"할당받음")           
+                        allocated[p] = True
+        
+        for i in range(core):
+            if prevState[i] == False and processor[i][0] ==  True and len(temp) > 0:
+                print("### 프로세서",i+1, "ON ###")
+                prevState[i] = True
+                
+                if processor[i][1] == 'E':
+                    consumedPower += 0.1
+                    
+                else:
+                    consumedPower += 0.5
+        
+        # 프로세서 할당 받은 프로세스는 실행함
+        for i in range(core):
+            p = processor[i][2]   
+            if processor[i][0]:
+                
+                if processor[i][1] == 'E':
+                    burst_time[p] -= 1
+                    consumedPower += 1
+                
+                else:
+                    burst_time[p] -= 2
+                    consumedPower += 3
+                    
+                print("프로세서",i+1 ,": 프로세서",p+1, "처리")
+            
+            if burst_time[p] <= 0:
+                burst_time[p] = 0  
 
-def HRRN(N, arrival_time, burst_time, processor=1):
-	total_bt = 0
-	sum_wt = 0
-	sum_tt = 0
-	
-	completed =[False] * N
-	terminated = []
-	waiting_time = [0] * N
-	turnaround_time = [0] * N
-	normalized_tt = [0] * N 
-	bt_temp = list(burst_time)
-	process = []
-	consumedPower = 0
-	core = 'E'
- 
-	
-	total_bt = initProcess(process, burst_time, total_bt, N)
-	pos = findFirstArrived(arrival_time)
+        currentTime += 1
+        
+        for i in range(core):
+            if prevState[i] == True and processor[i][0] == False and len(readyQueue) == 0:
+                print("### 프로세서",i+1, "OFF ###")
+                prevState[i] = False
+        
+        # Ready Q에서 대기 중인 애들 waitingTime += 1
+        for p in readyQueue:
+            waitingTime[p[0]] += 1
+        
+        print("실행하지 못한애들 Ready Q", readyQueue)
+        print("소비전력", consumedPower)
 
-	current_time = 0
-	consumedPower += operateCore(core)
-	
-	readyQueue = []
-	
-
-	while(current_time <= total_bt):
-		print("---",current_time,"초 ---")
-
-		if len(terminated) == N:
-			print("종료")
-			break
-
-		# Ready Queue에 들어온 프로세스 확인하기
-		searchReadyQueue(arrival_time, current_time, completed)
-
-		# Response Ratio가 가장 높은 프로세스 찾기
-		if arrival_time[pos] <current_time:
-			pos = findHighestResponseRatio(N, completed, arrival_time, current_time-1, burst_time, pos)
-		
-			# 완료된 프로세스 있는지 확인하기
-			checkCompletedProcess(completed, burst_time, terminated)
-		
-			# 프로세스 실행
-			run(burst_time, pos, core)
-   			
-      		# 전력 소비
-			consumedPower += consumePower(core)
-	
-		
-		
-		# 현재 시간 += 1
-		current_time += 1
-
-		
-
-		# 스케줄링 진행 정보 계산
-		scheduling_info = current_time, arrival_time, burst_time, waiting_time, turnaround_time, normalized_tt, pos, sum_tt, sum_wt, bt_temp
-		calSchedulingInfo(scheduling_info)
-		
-		print(process[pos],"실행 중..", "남은 실행 시간", burst_time[pos],  "현재 전력 소비량: ", consumedPower, "\n")
-		# 실행 완료된 프로세스 terminated에 넣기
-		checkTerminated(burst_time, terminated)
-		
-		
-		
-
-
+        print()
+        
+    # Nomalized TT 구하기
+    for i in range(N):
+        normalizedTT[i] = turnaroundTime[i] / burstTimeTemp[i]
+        
+    print("소비전력", consumedPower)
+    print("대기시간", waitingTime)
+    print("반환시간", turnaroundTime)
+    print("Nomalized TT", normalizedTT)
 
 if __name__ == "__main__":
-	process = 5
-	processor = 2
-	
-	arrival_time = [0, 1, 3, 5, 6]
-	burst_time = [3, 7, 2, 5, 3]
-	
-	
-	HRRN(process, arrival_time, burst_time)
+    process = 5
+    processor = 2
+    
+    arrival_time = [0, 1, 3, 5, 6]
+    burst_time = [3, 7, 2, 5, 3]
+
+    
+    HRRN(arrival_time, burst_time)
