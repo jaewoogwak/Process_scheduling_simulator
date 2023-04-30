@@ -14,7 +14,7 @@ def isFinished(completed):
 # 4. 프로세스에게 프로세서 할당 
 # 5. 실행
 
-def FCFS(arrival_time, burst_time):
+def FCFS(arrival_time, workLoad):
     N = 10
     core = 4
     readyQueue = []
@@ -22,18 +22,19 @@ def FCFS(arrival_time, burst_time):
     # on = True, off = False
     processorInfo = [False, "P", -1]
     processor = [processorInfo[:] for _ in range(core)]
-   
-    # print("processr", processor) 
+
+    
     processor[0][1] = 'E'
     
     processor[2][1] = 'E'
     
     
     prevState = [False for _ in range(core)]
-    process = [p for p in range(1, N+1)]
     completed = [False for _ in range(N)]
     allocated = [False for _ in range(N)]
-    burstTimeTemp = burst_time[:]
+    burstTime = [0 for _ in range(N)]
+    
+    burstTimeTemp = workLoad[:]
     waitingTime = [0] * N
     turnaroundTime = [0] * N
     normalizedTT = [0] * N 
@@ -47,13 +48,13 @@ def FCFS(arrival_time, burst_time):
         readyQueue = []
         p = 0
         
-        print("---",currentTime,"초---", burst_time)
+        print("---",currentTime,"초---", workLoad)
         
         # 종료할 프로세스가 있는지 확인
         for i in range(core):
             p = processor[i][2]
         
-            if burst_time[p] <= 0:
+            if workLoad[p] <= 0:
                 if processor[i][2] != -1:
                     completed[p] = True
                     print("*** 프로세스", processor[i][2]+1, " 종료 ***")
@@ -102,17 +103,19 @@ def FCFS(arrival_time, burst_time):
             if processor[i][0]:
                 
                 if processor[i][1] == 'E':
-                    burst_time[p] -= 1
+                    workLoad[p] -= 1
                     consumedPower += 1
+                    burstTime[p] += 1
                 
                 else:
-                    burst_time[p] -= 2
+                    workLoad[p] -= 2
                     consumedPower += 3
+                    burstTime[p] += 1
                     
                 print("프로세서",i+1 ,": 프로세서",p+1, "처리")
             
-            if burst_time[p] <= 0:
-                burst_time[p] = 0    
+            if workLoad[p] <= 0:
+                workLoad[p] = 0    
 
         currentTime += 1
         
@@ -132,9 +135,10 @@ def FCFS(arrival_time, burst_time):
 
     # Nomalized TT 구하기
     for i in range(N):
-        normalizedTT[i] = turnaroundTime[i] / burstTimeTemp[i]
+        normalizedTT[i] = turnaroundTime[i] / burstTime[i]
         
     print("소비전력", consumedPower)
+    print("실행시간", burstTime)
     print("대기시간", waitingTime)
     print("반환시간", turnaroundTime)
     print("Nomalized TT", normalizedTT)
@@ -145,7 +149,7 @@ if __name__ == "__main__":
     processor = 4
     
     arrival_time = [0, 0, 1, 3, 3, 4, 4, 6, 8, 9]
-    burst_time = [10, 5, 7, 5, 8, 12, 13, 6, 3, 9]
+    workLoad = [10, 5, 7, 5, 8, 12, 13, 6, 3, 9]
 
     
-    FCFS(arrival_time, burst_time)
+    FCFS(arrival_time, workLoad)
