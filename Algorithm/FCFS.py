@@ -15,13 +15,20 @@ def isFinished(completed):
 # 5. 실행
 
 def FCFS(arrival_time, burst_time):
-    N = 5
-    core = 1
+    N = 10
+    core = 4
     readyQueue = []
     # 프로세스 할당 받은 여부, 코어의 종류, 현재 실행중인 프로세스 번호, 현재 프로세서 on/off
     # on = True, off = False
     processorInfo = [False, "P", -1]
     processor = [processorInfo[:] for _ in range(core)]
+   
+    # print("processr", processor) 
+    processor[0][1] = 'E'
+    
+    processor[2][1] = 'E'
+    
+    
     prevState = [False for _ in range(core)]
     process = [p for p in range(1, N+1)]
     completed = [False for _ in range(N)]
@@ -54,7 +61,6 @@ def FCFS(arrival_time, burst_time):
                     processor[i][0] = False
                     processor[i][2] = -1
 
-
         if isFinished(completed):
             print("종료!")
             break
@@ -64,7 +70,6 @@ def FCFS(arrival_time, burst_time):
             if arrival_time[i] <= currentTime and not completed[i] and not allocated[i]:
                 readyQueue.append(i)
 
-        
         # ready queue에서 빼기
         temp = readyQueue[:]
         for i in range(core):
@@ -90,7 +95,6 @@ def FCFS(arrival_time, burst_time):
                     
                 else:
                     consumedPower += 0.5
-        
         
         # 프로세서 할당 받은 프로세스는 실행함
         for i in range(core):
@@ -126,8 +130,6 @@ def FCFS(arrival_time, burst_time):
 
         print() 
 
-        
-    
     # Nomalized TT 구하기
     for i in range(N):
         normalizedTT[i] = turnaroundTime[i] / burstTimeTemp[i]
@@ -139,11 +141,11 @@ def FCFS(arrival_time, burst_time):
     
 
 if __name__ == "__main__":
-    process = 5
+    process = 10
     processor = 4
     
-    arrival_time = [0, 1, 3, 5, 6]
-    burst_time = [3, 7, 2, 5, 3]
+    arrival_time = [0, 0, 1, 3, 3, 4, 4, 6, 8, 9]
+    burst_time = [10, 5, 7, 5, 8, 12, 13, 6, 3, 9]
 
     
     FCFS(arrival_time, burst_time)
