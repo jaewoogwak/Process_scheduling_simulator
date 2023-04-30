@@ -14,22 +14,19 @@ def isFinished(completed):
 # 4. 프로세스에게 프로세서 할당 
 # 5. 실행
 
-def FCFS(arrival_time, workLoad):
-    N = 10
-    core = 4
+def FCFS(inputInfo, arrival_time, workLoad):
+    N, core = inputInfo
+    P = len(core) # 프로세서
     readyQueue = []
-    # 프로세스 할당 받은 여부, 코어의 종류, 현재 실행중인 프로세스 번호, 현재 프로세서 on/off
+    
+    # 프로세스 할당 받은 여부, 코어의 종류, 현재 실행중인 프로세스 번호
     # on = True, off = False
-    processorInfo = [False, "P", -1]
-    processor = [processorInfo[:] for _ in range(core)]
-
+    processor = []
+    for i in range(P):
+        processor.append([False, core[i], -1])    
     
-    processor[0][1] = 'E'
-    
-    processor[2][1] = 'E'
-    
-    
-    prevState = [False for _ in range(core)]
+    prevState = [False for _ in range(P)]
+    notArrived = [True for _ in range(N)]
     completed = [False for _ in range(N)]
     allocated = [False for _ in range(N)]
     burstTime = [0 for _ in range(N)]
@@ -45,13 +42,13 @@ def FCFS(arrival_time, workLoad):
     temp = []
     
     while not isFinished(completed):
-        readyQueue = []
+        # readyQueue = []
         p = 0
         
         print("---",currentTime,"초---", workLoad)
         
         # 종료할 프로세스가 있는지 확인
-        for i in range(core):
+        for i in range(P):
             p = processor[i][2]
         
             if workLoad[p] <= 0:
@@ -68,16 +65,16 @@ def FCFS(arrival_time, workLoad):
         
         # ready queue에 넣기
         for i in range(N):
-            if arrival_time[i] <= currentTime and not completed[i] and not allocated[i]:
+            if arrival_time[i] <= currentTime and not completed[i] and not allocated[i] and notArrived[i]:
                 readyQueue.append(i)
+                notArrived[i] = False
 
-        # ready queue에서 빼기
-        temp = readyQueue[:]
-        for i in range(core):
+        # ready queue에서 빼기            
+        for i in range(P):
             if not processor[i][0]:
                 if len(readyQueue) > 0: 
                     p = readyQueue.pop(0)
-            
+                
                 # 아직 프로세서 할당 못받은 프로세스라면, 할당 받음
                 if not allocated[p] and processor[i][0] == False and p != -1:
                     processor[i][2] = p
@@ -86,8 +83,8 @@ def FCFS(arrival_time, workLoad):
                     allocated[p] = True
                     
         
-        for i in range(core):
-            if prevState[i] == False and processor[i][0] ==  True and len(temp) > 0:
+        for i in range(P):
+            if prevState[i] == False and processor[i][0] ==  True:
                 print("### 프로세서",i+1, "ON ###")
                 prevState[i] = True
                 
@@ -98,7 +95,7 @@ def FCFS(arrival_time, workLoad):
                     consumedPower += 0.5
         
         # 프로세서 할당 받은 프로세스는 실행함
-        for i in range(core):
+        for i in range(P):
             p = processor[i][2]   
             if processor[i][0]:
                 
@@ -119,7 +116,7 @@ def FCFS(arrival_time, workLoad):
 
         currentTime += 1
         
-        for i in range(core):
+        for i in range(P):
             if prevState[i] == True and processor[i][0] == False and len(readyQueue) == 0:
                 print("### 프로세서",i+1, "OFF ###")
                 prevState[i] = False
@@ -146,10 +143,11 @@ def FCFS(arrival_time, workLoad):
 
 if __name__ == "__main__":
     process = 10
-    processor = 4
-    
+    processor = ['P', 'E', 'E', 'P']
+    inputInfo = (process, processor)
     arrival_time = [0, 0, 1, 3, 3, 4, 4, 6, 8, 9]
     workLoad = [10, 5, 7, 5, 8, 12, 13, 6, 3, 9]
 
     
-    FCFS(arrival_time, workLoad)
+    
+    FCFS(inputInfo, arrival_time, workLoad)
