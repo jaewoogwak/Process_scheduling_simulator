@@ -13,7 +13,6 @@ def setPreemption(i, processor, allocated):
     processor[i][2] = -1
     processor[i][3] = 0
 
-
 # 기본 로직
 # 1. 종료할 프로세스 있는지 확인 
 # 2. ready Q 넣기
@@ -48,7 +47,6 @@ def RoundRobin(inputInfo, arrival_time, workLoad, timeQuantum):
     
     currentTime = 0
     consumedPower = 0
-    temp = []
     
     while not isFinished(completed):
         # readyQueue = []
@@ -99,7 +97,6 @@ def RoundRobin(inputInfo, arrival_time, workLoad, timeQuantum):
                 isOccurPreemption[p] = False
             preemption = False
             
-        print("RQ", readyQueue)
 
         # ready queue에서 빼기            
         for i in range(P):
@@ -114,9 +111,6 @@ def RoundRobin(inputInfo, arrival_time, workLoad, timeQuantum):
                     print("프로세스",p+1,"는 프로세서를",i+1,"할당받음")           
                     allocated[p] = True
                     processor[i][3] = 0
-                    
-        # 할당받고
-        print("할당받은뒤 프로세서", processor)
         
         for i in range(P):
             if prevState[i] == False and processor[i][0] ==  True:
@@ -184,13 +178,13 @@ def RoundRobin(inputInfo, arrival_time, workLoad, timeQuantum):
 
 if __name__ == "__main__":
     process = 5
-    processor = ['P', 'P']
+    processor = ['E']
     inputInfo = (process, processor)
     
     arrivalTime = [0, 1, 3, 5, 6]
     workLoad = [3,7,2,5,3]
     
-    timeQuantum = 3
+    timeQuantum = 2
     
     
     RoundRobin(inputInfo, arrivalTime, workLoad, timeQuantum)
