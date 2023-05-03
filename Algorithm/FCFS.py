@@ -31,15 +31,12 @@ def FCFS(inputInfo, arrival_time, workLoad):
     allocated = [False for _ in range(N)]
     burstTime = [0 for _ in range(N)]
     
-    burstTimeTemp = workLoad[:]
     waitingTime = [0] * N
     turnaroundTime = [0] * N
     normalizedTT = [0] * N 
     
-    
     currentTime = 0
     consumedPower = 0
-    temp = []
     
     while not isFinished(completed):
         # readyQueue = []
