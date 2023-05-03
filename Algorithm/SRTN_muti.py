@@ -101,8 +101,7 @@ def SRTN(inputInfo, arrival_time, workLoad):
                     processor_num=i
                     
             if min_workload > workLoad[p]: # 레디 큐에서 나온 프로세스 workload와 비교
-                readyQueue.append(running_process)
-                # workload?                     
+                readyQueue.append(running_process)                    
                 processor[processor_num][2] = p
                 processor[processor_num][0] = True
                 processor[processor_num][3]= workLoad[p] 
@@ -114,34 +113,6 @@ def SRTN(inputInfo, arrival_time, workLoad):
                         
                           
                         
-            # if not processor[i][0] and  processor[i][1]=='P' : # 프로세서가 할당 안 받고 P 코어
-            #         # 할당해줘
-            # elif not processor[i][0] and  processor[i][1]=='E': # 프로세서가 할당 안 받고 E 코어
-            #     check=0
-            #     for i in range(2): # P 코어 수
-            #         if processor[i][3] <= 1 :
-            #             check=1
-            #             # p 코어 프로세스를 e 코어로 가져옴
-            #             # p 코어에 프로세스 할당
-            #     if check == 0 :
-            #         # e 코어 할당해줘    
-                    
-            # elif processor[i][0] and  processor[i][1]=='P': # 프로세서가 할당되어 있고 P 코어
-                
-            #     # 다른 P 코어 비어있는 경우
-                
-            #     # E 코어 비어있는 경우
-                
-            #     # 비어있는 E 코어 없는 경우
-            # elif processor[i][0] and  processor[i][1]=='E': # 프로세서가 할당되어 있고 P 코어
-                    
-                # 아직 프로세서 할당 못받은 프로세스라면, 할당 받음
-                # if not allocated[p] and processor[i][0] == False and p != -1:                        
-                #     processor[i][2] = p
-                #     processor[i][0] = True
-                #     processor[i][3]= workLoad[p] 
-                #     print("프로세스",p+1,"는 프로세서를",i+1,"할당받음")           
-                #     allocated[p] = True
                     
         
         for i in range(P):
