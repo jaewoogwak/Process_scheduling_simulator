@@ -151,9 +151,27 @@ def HRRN(inputInfo, arrival_time, workLoad):
     print("반환시간", turnaroundTime)
     print("Nomalized TT", normalizedTT)
 
+def generateProcessor(core, P, E):
+    if core != P + E:
+        print("프로세서 분배가 올바르지 않습니다.")
+        return False
+    
+    processor = []
+    for i in range(P):
+        processor.append("P")
+
+    for i in range(E):
+        processor.append("E")
+        
+    return processor
+
+
 if __name__ == "__main__":
     process = 5
-    processor = ['E']
+    core = 1
+    Pcore = 0
+    Ecore = 1
+    processor = generateProcessor(core, Pcore, Ecore)
     inputInfo = (process, processor)
     
     arrivalTime = [0, 0, 1, 3, 3, 4, 4, 6, 8, 9]
