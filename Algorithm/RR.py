@@ -1,10 +1,3 @@
-def isFinished(completed):
-    for i in range(len(completed)):
-        if not completed[i]:
-            return False
-        
-    return True
-
 
 def setPreemption(i, processor, allocated):
     # if processor[i][3] == timeQuantum:
@@ -21,7 +14,15 @@ def setPreemption(i, processor, allocated):
 # 5. 실행
 # 6. Time quantum 지나면 현재 프로세서의 실행 멈추고 2번으로 넘어감
 
-def RoundRobin(inputInfo, arrival_time, workLoad, timeQuantum):
+def RR(inputInfo, arrivalTime, workLoad, timeQuantum):
+    
+    def isFinished(completed):
+        for i in range(len(completed)):
+            if not completed[i]:
+                return False
+            
+        return True
+
     N, core = inputInfo
     P = len(core) # 프로세서
     readyQueue = []
@@ -49,7 +50,6 @@ def RoundRobin(inputInfo, arrival_time, workLoad, timeQuantum):
     consumedPower = 0
     
     while not isFinished(completed):
-        # readyQueue = []
         p = 0
         
         print("---",currentTime,"초---", workLoad)
@@ -62,7 +62,7 @@ def RoundRobin(inputInfo, arrival_time, workLoad, timeQuantum):
                 if processor[i][2] != -1:
                     completed[p] = True
                     print("*** 프로세스", processor[i][2]+1, " 종료 ***")
-                    turnaroundTime[p] = currentTime - arrival_time[p]
+                    turnaroundTime[p] = currentTime - arrivalTime[p]
                     processor[i][0] = False
                     processor[i][2] = -1
                     processor[i][3] = 0
@@ -86,7 +86,7 @@ def RoundRobin(inputInfo, arrival_time, workLoad, timeQuantum):
         
         # ready queue에 넣기
         for i in range(N):
-            if arrival_time[i] <= currentTime and not completed[i] and not allocated[i] and notArrived[i]:
+            if arrivalTime[i] <= currentTime and not completed[i] and not allocated[i] and notArrived[i]:
                 readyQueue.append(i)
                 notArrived[i] = False
                 
@@ -157,8 +157,8 @@ def RoundRobin(inputInfo, arrival_time, workLoad, timeQuantum):
         for i in readyQueue:
             waitingTime[i] += 1
         
-        print("실행하지 못한애들 Ready Q", readyQueue)
-        print("소비전력", consumedPower)
+        # print("실행하지 못한애들 Ready Q", readyQueue)
+        # print("소비전력", consumedPower)
 
         print() 
         
@@ -169,12 +169,9 @@ def RoundRobin(inputInfo, arrival_time, workLoad, timeQuantum):
     for i in range(N):
         normalizedTT[i] = turnaroundTime[i] / burstTime[i]
         
-    print("소비전력", consumedPower)
-    print("실행시간", burstTime)
-    print("대기시간", waitingTime)
-    print("반환시간", turnaroundTime)
-    print("Nomalized TT", normalizedTT)
-    
+    # Return output
+    output = [burstTime, waitingTime, turnaroundTime, normalizedTT, consumedPower]
+    return output
     
 def generateProcessor(core, P, E):
     if core != P + E:
@@ -190,6 +187,11 @@ def generateProcessor(core, P, E):
         
     return processor
 
+def checkValidate(process, arrivalTime, workLoad):
+    if process != len(arrivalTime) or process != len(workLoad):
+        return False
+
+    return True
 
 if __name__ == "__main__":
     process = 5
@@ -203,6 +205,19 @@ if __name__ == "__main__":
     workLoad = [3,7,2,5,3]
     
     timeQuantum = 2
+    # 입력이 올바른지 검사
+    if not checkValidate(process, arrivalTime, workLoad):
+        print("프로세스 수와 arrivalTime, workLoad 데이터 길이가 일치하지 않습니다.")
+
+    else:
+        # 프로세스 스케줄링 실행
+        output = RR(inputInfo, arrivalTime, workLoad, timeQuantum)
+        burstTime, waitingTime, turnaroundTime, normalizedTT, consumedPower = output
+
+        print("소비전력", consumedPower)
+        print("실행시간", burstTime)
+        print("대기시간", waitingTime)
+        print("반환시간", turnaroundTime)
+        print("Nomalized TT", normalizedTT)
+        print("output", output)
     
-    
-    RoundRobin(inputInfo, arrivalTime, workLoad, timeQuantum)
