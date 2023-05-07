@@ -90,7 +90,7 @@ def SRTN(inputInfo, arrivalTime, workLoad):
                 processor[i][3] = workLoad[p] 
                 print("프로세스", p+1, "는 프로세서를", i+1, "할당받음")           
                 allocated[p] = True
-            elif processor[i][0] == 1:
+            elif processor[i][0] == 1 and p != -1:
                 readyQueue.append(p)
         
             
@@ -125,7 +125,7 @@ def SRTN(inputInfo, arrivalTime, workLoad):
                 processor[processor_num][2] = p
                 processor[processor_num][0] = True
                 processor[processor_num][3] = workLoad[p] 
-                print("프로세스", p+1, "는 프로세서를", i+1, "할당받음")           
+                print("프로세스", p+1, "는 프로세서를", processor_num+1, "선점함")           
                 allocated[p] = True
                 
             elif max_workload <= workLoad[p] and p!= -1 : # Ready queue에서 꺼내온 프로세스 다시 Ready queue로 삽입
