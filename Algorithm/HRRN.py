@@ -132,7 +132,7 @@ def HRRN(inputInfo, arrivalTime, workLoad):
 
     # Nomalized TT 구하기
     for i in range(N):
-        normalizedTT[i] = turnaroundTime[i] // burstTime[i]
+        normalizedTT[i] = turnaroundTime[i] / burstTime[i]
 
     # Return output
     output = [burstTime, waitingTime,
