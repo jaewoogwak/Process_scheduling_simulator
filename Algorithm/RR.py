@@ -132,7 +132,7 @@ def RR(inputInfo, arrivalTime, workLoad, timeQuantum):
                 # timeSlice += 1
                 processor[i][3] += 1
 
-                print("프로세서", i+1, ": 프로세서", p+1, "처리")
+                print("프로세서", i+1, ": 프로세스", p+1, "처리")
 
             if workLoad[p] <= 0:
                 workLoad[p] = 0
