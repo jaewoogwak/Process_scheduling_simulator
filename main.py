@@ -56,12 +56,12 @@ if __name__ == "__main__":
 
         else:
             # 프로세스 스케줄링 실행
-            output = SRTN(inputInfo, arrivalTime, workLoad)
+            output = HRRN(inputInfo, arrivalTime, workLoad)
             burstTime, waitingTime, turnaroundTime, normalizedTT, consumedPower = output
 
-            print("소비전력", consumedPower)
             print("실행시간", burstTime)
             print("대기시간", waitingTime)
             print("반환시간", turnaroundTime)
             print("Nomalized TT", normalizedTT)
+            print("소비전력", consumedPower)
             print("output", output)
