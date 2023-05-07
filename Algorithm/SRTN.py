@@ -116,6 +116,9 @@ def SRTN(inputInfo, arrivalTime, workLoad):
                 p=readyQueue.pop(index) # workload 가장 적은 프로세스 꺼냄
             
             max_workload = processor[0][3]
+            running_process=processor[0][2]
+            processor_num=0
+            
             for l in range(1, P):
                 if processor[l][3] > max_workload:
                     max_workload=processor[l][3]
@@ -216,14 +219,16 @@ def checkValidate(process, arrivalTime, workLoad):
 
 
 if __name__ == "__main__":
-    process = 10
-    core = 4
-    Pcore = 2
-    Ecore = 2
+    process = 5
+    core = 1
+    Pcore = 0
+    Ecore = 1
     processor = generateProcessor(core, Pcore, Ecore)
     inputInfo = (process, processor)
-    arrivalTime = [0, 0, 1, 3, 3, 4, 4, 6, 8, 9]
-    workLoad = [10, 5, 7, 5, 8, 12, 13, 6, 3, 9]
+    arrivalTime = [0,1,3,5,6]
+    workLoad = [3,7,2,5,3]
+    # arrivalTime = [0, 0, 1, 3, 3, 4, 4, 6, 8, 9]
+    # workLoad = [10, 5, 7, 5, 8, 12, 13, 6, 3, 9]
 
     # 입력이 올바른지 검사
     if not checkValidate(process, arrivalTime, workLoad):
