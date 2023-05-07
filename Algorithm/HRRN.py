@@ -113,7 +113,7 @@ def HRRN(inputInfo, arrivalTime, workLoad):
                     consumedPower += 3
 
                 burstTime[p] += 1
-                print("프로세서", i+1, ": 프로세서", p+1, "처리")
+                print("프로세서", i+1, ": 프로세스", p+1, "처리")
 
             if workLoad[p] <= 0:
                 workLoad[p] = 0
@@ -132,7 +132,7 @@ def HRRN(inputInfo, arrivalTime, workLoad):
 
     # Nomalized TT 구하기
     for i in range(N):
-        normalizedTT[i] = turnaroundTime[i] // burstTime[i]
+        normalizedTT[i] = turnaroundTime[i] / burstTime[i]
 
     # Return output
     output = [burstTime, waitingTime,

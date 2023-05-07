@@ -17,7 +17,7 @@ def RPN(inputInfo, arrivalTime, workLoad):
     N, core = inputInfo
     P = len(core)  # 프로세서
     readyQueue = []
-
+    order = []
     # 프로세스 할당 받은 여부, 코어의 종류, 현재 실행중인 프로세스 번호
     # on = True, off = False
     processor = []
@@ -54,6 +54,7 @@ def RPN(inputInfo, arrivalTime, workLoad):
                     completed[p] = True
                     print("*** 프로세스", processor[i][2]+1, " 종료 ***")
                     turnaroundTime[p] = currentTime - arrivalTime[p]
+                    order.append(p)
                     processor[i][0] = False
                     processor[i][2] = -1
 
@@ -131,7 +132,7 @@ def RPN(inputInfo, arrivalTime, workLoad):
                     consumedPower += 3
                     burstTime[p] += 1
 
-                print("프로세서", i+1, ": 프로세서", p+1, "처리")
+                print("프로세서", i+1, ": 프로세스", p+1, "처리")
 
             if workLoad[p] <= 0:
                 workLoad[p] = 0
@@ -156,4 +157,5 @@ def RPN(inputInfo, arrivalTime, workLoad):
     # Return output
     output = [burstTime, waitingTime,
               turnaroundTime, normalizedTT, consumedPower]
+
     return output
