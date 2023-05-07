@@ -80,6 +80,8 @@ def SRTN(inputInfo, arrivalTime, workLoad):
                     if min > workLoad[readyQueue[j]]:
                         index = j
                 p=readyQueue.pop(index) # workload 가장 적은 프로세스 꺼냄
+            else:
+                p = -1
                 
                 
             if not allocated[p] and processor[i][0] == False and p != -1:                     
@@ -103,18 +105,21 @@ def SRTN(inputInfo, arrivalTime, workLoad):
                     if min > workLoad[readyQueue[j]]:
                         index = j
                 p = readyQueue.pop(index) # workload 가장 적은 프로세스 꺼냄
+            else :
+                p = -1
+            
             
             max_workload = processor[0][3]
             running_process = processor[0][2]
             processor_num = 0
             
             for l in range(1, P):
-                if processor[l][3] > max_workload:
+                if processor[l][3] > max_workload :
                     max_workload = processor[l][3]
                     running_process = processor[l][2]
                     processor_num = l
                     
-            if max_workload > workLoad[p]: # Ready queue에서 나온 프로세스 workload와 비교
+            if max_workload > workLoad[p] and p!= -1 : # Ready queue에서 나온 프로세스 workload와 비교
                 readyQueue.append(running_process)   
                 allocated[running_process] = False                
                 processor[processor_num][2] = p
@@ -123,7 +128,7 @@ def SRTN(inputInfo, arrivalTime, workLoad):
                 print("프로세스", p+1, "는 프로세서를", i+1, "할당받음")           
                 allocated[p] = True
                 
-            else : # Ready queue에서 꺼내온 프로세스 다시 Ready queue로 삽입
+            elif max_workload <= workLoad[p] and p!= -1 : # Ready queue에서 꺼내온 프로세스 다시 Ready queue로 삽입
                 readyQueue.append(p)
                             
                     
@@ -154,7 +159,7 @@ def SRTN(inputInfo, arrivalTime, workLoad):
                     consumedPower += 3
                     burstTime[p] += 1
                     
-                print("프로세서", i+1 , ": 프로세서", p+1, "처리")
+                print("프로세서", i+1 , ": 프로세스", p+1, "처리")
             
             if workLoad[p] <= 0:
                 workLoad[p] = 0  
