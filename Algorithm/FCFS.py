@@ -30,10 +30,14 @@ def FCFS(inputInfo: tuple, arrivalTime: list, workLoad: list):
 
     currentTime = 0
     consumedPower = 0
+    result = []  # 결과를 담을 배열
 
     while not isFinished(completed):
         p = 0
         print("---", currentTime, "초---", workLoad)
+
+        result.append([arrivalTime[:], burstTime[:], waitingTime[:],
+                      consumedPower, completed[:], workLoad[:], readyQueue[:]])
 
         # 종료할 프로세스가 있는지 확인
         for i in range(P):
@@ -123,5 +127,5 @@ def FCFS(inputInfo: tuple, arrivalTime: list, workLoad: list):
 
     # Return output
     output = [burstTime, waitingTime,
-              turnaroundTime, normalizedTT, consumedPower]
+              turnaroundTime, normalizedTT, consumedPower, result]
     return output

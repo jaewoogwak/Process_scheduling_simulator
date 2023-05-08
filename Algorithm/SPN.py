@@ -32,11 +32,15 @@ def SPN(inputInfo, arrivalTime, workLoad):
 
     currentTime = 0
     consumedPower = 0
+    result = []  # 결과를 담을 배열
 
     while not isFinished(completed):
         p = 0
 
         print("---", currentTime, "초---", workLoad)
+
+        result.append([arrivalTime[:], burstTime[:], waitingTime[:],
+                      consumedPower, completed[:], workLoad[:], readyQueue[:]])
 
         # 종료할 프로세스가 있는지 확인
         for i in range(P):
@@ -104,8 +108,10 @@ def SPN(inputInfo, arrivalTime, workLoad):
             if workLoad[p] <= 0:
                 workLoad[p] = 0
 
+        # 현재 시간 증가
         currentTime += 1
 
+        # 시동 종료할 프로세서 있는지 확인
         for i in range(P):
             if prevState[i] == True and processor[i][0] == False and readyQueue.qsize() == 0:
                 print("### 프로세서", i+1, "OFF ###")
@@ -129,5 +135,5 @@ def SPN(inputInfo, arrivalTime, workLoad):
 
     # Return output
     output = [burstTime, waitingTime,
-              turnaroundTime, normalizedTT, consumedPower]
+              turnaroundTime, normalizedTT, consumedPower, result]
     return output
