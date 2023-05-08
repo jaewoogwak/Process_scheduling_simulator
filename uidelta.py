@@ -307,6 +307,11 @@ class Ui_Dialog(QMainWindow):
         self.label_13.setText(_translate("Dialog", "Time Quantum"))
         self.pushButton_coreapply.setText(_translate("Dialog", "APPLY"))
 
+    def reset(self):
+        loop = QEventLoop()
+        QTimer.singleShot(10000, loop.quit) # msec
+        loop.exec_()
+
     def pushapply(self): #core apply 버튼을 누를 시 입력된 값에 맞게 tablewidget, tablewidget_gantt 변경하는 함수
         global pcore, ecore
         pcore, ecore = 0, 0
@@ -322,27 +327,36 @@ class Ui_Dialog(QMainWindow):
         self.texte = int(self.texte)
         self.tableWidget_core.setRowCount(self.textp+self.texte)
         self.tableWidget_gantt.setRowCount(self.textp+self.texte)
-        self.tableWidget_core.setColumnCount(1)
-        itemhorizon = QTableWidgetItem("코어 종류")
+        self.tableWidget_core.setColumnCount(2)
+        self.tableWidget_gantt.setColumnCount(1)
+        itemhorizon = QTableWidgetItem("CORE NUMBER")
         self.tableWidget_core.setHorizontalHeaderItem(0,itemhorizon) 
+        itemhorizon = QTableWidgetItem("코어 종류")
+        self.tableWidget_core.setHorizontalHeaderItem(1,itemhorizon) 
+        itemhorizon = QTableWidgetItem("CORE NUMBER")
+        self.tableWidget_gantt.setHorizontalHeaderItem(0,itemhorizon)
         for i in range(self.textp):
             item = QTableWidgetItem("core"+str(i+1))
+            item.setTextAlignment(Qt.AlignCenter)
             itemp = QTableWidgetItem("PCORE")
             itemp.setTextAlignment(Qt.AlignCenter)
-            self.tableWidget_core.setVerticalHeaderItem(self.count, item)
-            self.tableWidget_core.setItem(i,0,itemp)
+            self.tableWidget_core.setItem(self.count,0, item)
+            self.tableWidget_core.setItem(i,1,itemp)
             item = QTableWidgetItem("core"+str(i+1))
-            self.tableWidget_gantt.setVerticalHeaderItem(self.count, item)
+            item.setTextAlignment(Qt.AlignCenter)
+            self.tableWidget_gantt.setItem(self.count,0, item)
             self.count += 1
             pcore += 1
         for i in range(self.textp,self.textp+self.texte):
             item = QTableWidgetItem("core"+str(i+1))
+            item.setTextAlignment(Qt.AlignCenter)
             iteme = QTableWidgetItem("ECORE")
             iteme.setTextAlignment(Qt.AlignCenter)
-            self.tableWidget_core.setVerticalHeaderItem(self.count, item)
-            self.tableWidget_core.setItem(i,0,iteme)
+            self.tableWidget_core.setItem(self.count,0, item)
+            self.tableWidget_core.setItem(i,1,iteme)
             item = QTableWidgetItem("core"+str(i+1))
-            self.tableWidget_gantt.setVerticalHeaderItem(self.count, item)
+            item.setTextAlignment(Qt.AlignCenter)
+            self.tableWidget_gantt.setItem(self.count,0, item)
             self.count += 1
             ecore += 1
 
@@ -474,8 +488,6 @@ class Ui_Dialog(QMainWindow):
                 item.setTextAlignment(Qt.AlignCenter)
                 self.tableWidget_result.setItem(i,5,item)
             
-
-
 
 if __name__ == "__main__":
     global pcore, ecore, processnum
