@@ -152,6 +152,8 @@ class Ui_Dialog(QMainWindow):
         self.tableWidget_gantt.setObjectName("tableWidget_gantt")
         self.tableWidget_gantt.setColumnCount(0)
         self.tableWidget_gantt.setRowCount(0)
+        header = self.tableWidget_gantt.verticalHeader()
+        header.setSectionResizeMode(QHeaderView.Stretch)
         self.pushButton_padd = QtWidgets.QPushButton(Dialog)
         self.pushButton_padd.setGeometry(QtCore.QRect(140, 460, 40, 40))
         font = QtGui.QFont()
@@ -192,7 +194,7 @@ class Ui_Dialog(QMainWindow):
         header = self.tableWidget_core.verticalHeader()
         header.setSectionResizeMode(QHeaderView.Stretch)
         self.label_13 = QtWidgets.QLabel(Dialog)
-        self.label_13.setGeometry(QtCore.QRect(260, 60, 100, 40))
+        self.label_13.setGeometry(QtCore.QRect(260, 60, 120, 40))
         font = QtGui.QFont()
         font.setFamily("HY헤드라인M")
         font.setPointSize(10)
@@ -300,7 +302,7 @@ class Ui_Dialog(QMainWindow):
         self.label_13.setText(_translate("Dialog", "Time Quantum"))
         self.pushButton_coreapply.setText(_translate("Dialog", "APPLY"))
 
-    def pushapply(self): #core apply 버튼을 누를 시 입력된 값에 맞게 tablewidget 변경하는 함수
+    def pushapply(self): #core apply 버튼을 누를 시 입력된 값에 맞게 tablewidget, tablewidget_gantt 변경하는 함수
         global pcore, ecore
         pcore, ecore = 0, 0
         self.tableWidget_core.clear()
@@ -314,8 +316,9 @@ class Ui_Dialog(QMainWindow):
             self.texte = 0
         self.texte = int(self.texte)
         self.tableWidget_core.setRowCount(self.textp+self.texte)
+        self.tableWidget_gantt.setRowCount(self.textp+self.texte)
         self.tableWidget_core.setColumnCount(1)
-        itemhorizon =QTableWidgetItem("코어 종류")
+        itemhorizon = QTableWidgetItem("코어 종류")
         self.tableWidget_core.setHorizontalHeaderItem(0,itemhorizon) 
         for i in range(self.textp):
             item = QTableWidgetItem("core"+str(i+1))
@@ -323,6 +326,8 @@ class Ui_Dialog(QMainWindow):
             itemp.setTextAlignment(Qt.AlignCenter)
             self.tableWidget_core.setVerticalHeaderItem(self.count, item)
             self.tableWidget_core.setItem(i,0,itemp)
+            item = QTableWidgetItem("core"+str(i+1))
+            self.tableWidget_gantt.setVerticalHeaderItem(self.count, item)
             self.count += 1
             pcore += 1
         for i in range(self.textp,self.textp+self.texte):
@@ -331,6 +336,8 @@ class Ui_Dialog(QMainWindow):
             iteme.setTextAlignment(Qt.AlignCenter)
             self.tableWidget_core.setVerticalHeaderItem(self.count, item)
             self.tableWidget_core.setItem(i,0,iteme)
+            item = QTableWidgetItem("core"+str(i+1))
+            self.tableWidget_gantt.setVerticalHeaderItem(self.count, item)
             self.count += 1
             ecore += 1
 
