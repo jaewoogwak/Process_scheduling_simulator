@@ -125,7 +125,7 @@ def SPN(inputInfo, arrivalTime, workLoad):
 
     # Nomalized TT 구하기
     for i in range(N):
-        normalizedTT[i] = turnaroundTime[i] / burstTime[i]
+        normalizedTT[i] = round(turnaroundTime[i] / burstTime[i], 2)
 
     # Return output
     output = [burstTime, waitingTime,
