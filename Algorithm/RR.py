@@ -33,18 +33,21 @@ def RR(inputInfo, arrivalTime, workLoad, timeQuantum):
     burstTime = [0 for _ in range(N)]
     isOccurPreemption = [False for _ in range(N)]
 
-    burstTimeTemp = workLoad[:]
     waitingTime = [0] * N
     turnaroundTime = [0] * N
     normalizedTT = [0] * N
 
     currentTime = 0
     consumedPower = 0
+    result = []  # 결과를 담을 배열
 
     while not isFinished(completed):
         p = 0
 
         print("---", currentTime, "초---", workLoad)
+
+        result.append([arrivalTime[:], burstTime[:], waitingTime[:],
+                      consumedPower, completed[:], workLoad[:], readyQueue[:]])
 
         # 종료할 프로세스가 있는지 확인
         for i in range(P):
@@ -103,6 +106,7 @@ def RR(inputInfo, arrivalTime, workLoad, timeQuantum):
                     allocated[p] = True
                     processor[i][3] = 0
 
+        # 프로세서 시동
         for i in range(P):
             if prevState[i] == False and processor[i][0] == True:
                 print("### 프로세서", i+1, "ON ###")
@@ -129,7 +133,6 @@ def RR(inputInfo, arrivalTime, workLoad, timeQuantum):
                     consumedPower += 3
                     burstTime[p] += 1
 
-                # timeSlice += 1
                 processor[i][3] += 1
 
                 print("프로세서", i+1, ": 프로세스", p+1, "처리")
@@ -137,8 +140,10 @@ def RR(inputInfo, arrivalTime, workLoad, timeQuantum):
             if workLoad[p] <= 0:
                 workLoad[p] = 0
 
+        # 현재 시간 증가
         currentTime += 1
 
+        # 시동 종료할 프로세서 있는지 확인
         for i in range(P):
             if prevState[i] == True and processor[i][0] == False and len(readyQueue) == 0:
                 print("### 프로세서", i+1, "OFF ###")
@@ -148,16 +153,13 @@ def RR(inputInfo, arrivalTime, workLoad, timeQuantum):
         for i in readyQueue:
             waitingTime[i] += 1
 
-        # print("실행하지 못한애들 Ready Q", readyQueue)
-        # print("소비전력", consumedPower)
-
         print()
 
     # Nomalized TT 구하기
     for i in range(N):
-        normalizedTT[i] = turnaroundTime[i] / burstTime[i]
+        normalizedTT[i] = round(turnaroundTime[i] / burstTime[i], 2)
 
     # Return output
     output = [burstTime, waitingTime,
-              turnaroundTime, normalizedTT, consumedPower]
+              turnaroundTime, normalizedTT, consumedPower, result]
     return output

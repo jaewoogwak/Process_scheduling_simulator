@@ -36,6 +36,7 @@ def RPN(inputInfo, arrivalTime, workLoad):
 
     currentTime = 0
     consumedPower = 0
+    result = []  # 결과를 담을 배열
 
     # 후보자 풀
     pool = []
@@ -44,6 +45,9 @@ def RPN(inputInfo, arrivalTime, workLoad):
         p = 0
 
         print("---", currentTime, "초---", workLoad)
+
+        result.append([arrivalTime[:], burstTime[:], waitingTime[:],
+                      consumedPower, completed[:], workLoad[:], readyQueue[:]])
 
         # 종료할 프로세스가 있는지 확인
         for i in range(P):
@@ -106,6 +110,7 @@ def RPN(inputInfo, arrivalTime, workLoad):
                     print("프로세스", p+1, "는 프로세서를", i+1, "할당받음")
                     allocated[p] = True
 
+        # 프로세서 시동
         for i in range(P):
             if prevState[i] == False and processor[i][0] == True:
                 print("### 프로세서", i+1, "ON ###")
@@ -137,8 +142,10 @@ def RPN(inputInfo, arrivalTime, workLoad):
             if workLoad[p] <= 0:
                 workLoad[p] = 0
 
+        # 현재 시간 증가
         currentTime += 1
 
+        # 시동 종료할 프로세서 있는지 확인
         for i in range(P):
             if prevState[i] == True and processor[i][0] == False and len(readyQueue) == 0:
                 print("### 프로세서", i+1, "OFF ###")
@@ -152,10 +159,10 @@ def RPN(inputInfo, arrivalTime, workLoad):
 
     # Nomalized TT 구하기
     for i in range(N):
-        normalizedTT[i] = turnaroundTime[i] / burstTime[i]
+        normalizedTT[i] = round(turnaroundTime[i] / burstTime[i], 2)
 
     # Return output
     output = [burstTime, waitingTime,
-              turnaroundTime, normalizedTT, consumedPower]
+              turnaroundTime, normalizedTT, consumedPower, result]
 
     return output
