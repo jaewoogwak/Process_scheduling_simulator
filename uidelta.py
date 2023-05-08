@@ -9,7 +9,7 @@
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
-from PyQt5 import QtCore, QtGui, QtWidgets, uic
+from PyQt5 import QtCore, QtGui, QtWidgets
 import main
 
 class Ui_Dialog(QMainWindow):
@@ -19,8 +19,9 @@ class Ui_Dialog(QMainWindow):
         self.pushButton_coreapply.clicked.connect(self.pushapply)
         self.pushButton_padd.clicked.connect(self.pushprocessadd)
         self.pushButton_podd.clicked.connect(self.pushprocessodd)
+        self.pushButton_Run.clicked.connect(self.pushrun)
 
-    def setupUi(self, Dialog):
+    def setupUi(self, Dialog): #uisetup
         Dialog.setObjectName("Dialog")
         Dialog.resize(1280, 723)
         Dialog.setStyleSheet("background-color: rgb(255, 255, 255);")
@@ -204,29 +205,33 @@ class Ui_Dialog(QMainWindow):
         self.tableWidget_result.setGeometry(QtCore.QRect(490, 500, 780, 200))
         self.tableWidget_result.setObjectName("tableWidget_result")
         self.tableWidget_result.setColumnCount(0)
-        self.tableWidget_result.setColumnCount(6)
-        item = QTableWidgetItem("AT")
+        self.tableWidget_result.setColumnCount(7)
+        item = QTableWidgetItem("PROCESS")
         self.tableWidget_result.setHorizontalHeaderItem(0, item)
-        item = QTableWidgetItem("BT")
+        item = QTableWidgetItem("AT")
         self.tableWidget_result.setHorizontalHeaderItem(1, item)
-        item = QTableWidgetItem("WT")
+        item = QTableWidgetItem("BT")
         self.tableWidget_result.setHorizontalHeaderItem(2, item)
-        item = QTableWidgetItem("TT")
+        item = QTableWidgetItem("WT")
         self.tableWidget_result.setHorizontalHeaderItem(3, item)
-        item = QTableWidgetItem("NTT")
+        item = QTableWidgetItem("TT")
         self.tableWidget_result.setHorizontalHeaderItem(4, item)
-        item = QTableWidgetItem("DONE")
+        item = QTableWidgetItem("NTT")
         self.tableWidget_result.setHorizontalHeaderItem(5, item)
+        item = QTableWidgetItem("DONE")
+        self.tableWidget_result.setHorizontalHeaderItem(6, item)
         header = self.tableWidget_result.horizontalHeader()
         header.setSectionResizeMode(QHeaderView.Stretch)
         self.tableWidget = QtWidgets.QTableWidget(Dialog)
         self.tableWidget.setGeometry(QtCore.QRect(10, 500, 460, 200))
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(2)
-        item = QTableWidgetItem("Arrival Time")
+        self.tableWidget.setColumnCount(3)
+        item = QTableWidgetItem("Process")
         self.tableWidget.setHorizontalHeaderItem(0, item)
-        item = QTableWidgetItem("Load Time")
+        item = QTableWidgetItem("Arrival Time")
         self.tableWidget.setHorizontalHeaderItem(1, item)
+        item = QTableWidgetItem("Load Time")
+        self.tableWidget.setHorizontalHeaderItem(2, item)
         self.tableWidget.setRowCount(0)
         header = self.tableWidget.horizontalHeader()
         header.setSectionResizeMode(QHeaderView.Stretch)
@@ -272,7 +277,7 @@ class Ui_Dialog(QMainWindow):
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
-    def retranslateUi(self, Dialog):
+    def retranslateUi(self, Dialog): #translate ui
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
         self.label_3.setText(_translate("Dialog", "Ready Queue"))
@@ -341,7 +346,7 @@ class Ui_Dialog(QMainWindow):
             self.count += 1
             ecore += 1
 
-    def initprocess(self):
+    def initprocess(self): #이거 안씀.
         self.tableWidget.setColumnCount(6)
         item = QTableWidgetItem("AT")
         self.tableWidget_result.setHorizontalHeaderItem(0, item)
@@ -356,23 +361,120 @@ class Ui_Dialog(QMainWindow):
         item = QTableWidgetItem("DONE")
         self.tableWidget_result.setHorizontalHeaderItem(5, item)
 
-    def pushprocessadd(self):
+    def pushprocessadd(self): # + 버튼 클릭시 이벤트 담당
         global processnum
         self.tableWidget.setRowCount(processnum+1)
         self.tableWidget_result.setRowCount(processnum+1)
         item = QTableWidgetItem("P"+str(processnum+1))
-        self.tableWidget.setVerticalHeaderItem(processnum, item)
+        item.setTextAlignment(Qt.AlignCenter)
+        self.tableWidget.setItem(processnum,0,item)
+        item = QTableWidgetItem(str(processnum+1))
+        item.setTextAlignment(Qt.AlignCenter)
+        self.tableWidget.setItem(processnum,1,item)
+        item = QTableWidgetItem(str(processnum+1))
+        item.setTextAlignment(Qt.AlignCenter)
+        self.tableWidget.setItem(processnum,2,item)
+        header = self.tableWidget.horizontalHeader()
+        header.resizeSection(processnum,100)
         item = QTableWidgetItem("P"+str(processnum+1))
-        self.tableWidget_result.setVerticalHeaderItem(processnum, item)
-        if processnum < 14:
-            processnum += 1
+        item.setTextAlignment(Qt.AlignCenter)
+        self.tableWidget_result.setItem(processnum,0, item)
+        processnum += 1
 
-    def pushprocessodd(self):
+    def pushprocessodd(self): # - 버튼 클릭시 이벤트 담당
         global processnum
         if processnum > 0:
             processnum -= 1
         self.tableWidget.setRowCount(processnum)
         self.tableWidget_result.setRowCount(processnum)
+
+    def pushrun(self): # run 버튼 클릭시 이벤튼
+        global processnum
+        selected_algo = self.comboBox.currentIndex()
+        if selected_algo == 0:
+            core = pcore + ecore
+            generate = main.generateProcessor(core,pcore,ecore)
+            inputInfo = (processnum, generate)
+            arrivaltime = []
+            workload = []
+            for i in range(processnum):
+                arrivaltime.append(int(self.tableWidget.item(i,1).text()))
+                workload.append(int(self.tableWidget.item(i,2).text()))
+            output = main.FCFS(inputInfo,arrivaltime,workload)
+            burstTime, waitingTime, turnaroundTime, normalizedTT, consumedPower = output
+            for i in range(processnum):
+                item = QTableWidgetItem(str(arrivaltime[i]))
+                item.setTextAlignment(Qt.AlignCenter)
+                self.tableWidget_result.setItem(i,1,item)
+                item = QTableWidgetItem(str(burstTime[i]))
+                item.setTextAlignment(Qt.AlignCenter)
+                self.tableWidget_result.setItem(i,2,item)
+                item = QTableWidgetItem(str(waitingTime[i]))
+                item.setTextAlignment(Qt.AlignCenter)
+                self.tableWidget_result.setItem(i,3,item)
+                item = QTableWidgetItem(str(turnaroundTime[i]))
+                item.setTextAlignment(Qt.AlignCenter)
+                self.tableWidget_result.setItem(i,4,item)
+                item = QTableWidgetItem(str(normalizedTT[i]))
+                item.setTextAlignment(Qt.AlignCenter)
+                self.tableWidget_result.setItem(i,5,item)
+        if selected_algo == 1:
+            core = pcore + ecore
+            generate = main.generateProcessor(core,pcore,ecore)
+            inputInfo = (processnum, generate)
+            timequantum = int(self.textEdit_time_quantum.toPlainText())
+            arrivaltime = []
+            workload = []
+            for i in range(processnum):
+                arrivaltime.append(int(self.tableWidget.item(i,1).text()))
+                workload.append(int(self.tableWidget.item(i,2).text()))
+            output = main.RR(inputInfo,arrivaltime,workload, timequantum)
+            burstTime, waitingTime, turnaroundTime, normalizedTT, consumedPower = output
+            for i in range(processnum):
+                item = QTableWidgetItem(str(arrivaltime[i]))
+                item.setTextAlignment(Qt.AlignCenter)
+                self.tableWidget_result.setItem(i,1,item)
+                item = QTableWidgetItem(str(burstTime[i]))
+                item.setTextAlignment(Qt.AlignCenter)
+                self.tableWidget_result.setItem(i,2,item)
+                item = QTableWidgetItem(str(waitingTime[i]))
+                item.setTextAlignment(Qt.AlignCenter)
+                self.tableWidget_result.setItem(i,3,item)
+                item = QTableWidgetItem(str(turnaroundTime[i]))
+                item.setTextAlignment(Qt.AlignCenter)
+                self.tableWidget_result.setItem(i,4,item)
+                item = QTableWidgetItem(str(normalizedTT[i]))
+                item.setTextAlignment(Qt.AlignCenter)
+                self.tableWidget_result.setItem(i,5,item)
+        if selected_algo == 2:
+            core = pcore + ecore
+            generate = main.generateProcessor(core,pcore,ecore)
+            inputInfo = (processnum, generate)
+            arrivaltime = []
+            workload = []
+            for i in range(processnum):
+                arrivaltime.append(int(self.tableWidget.item(i,1).text()))
+                workload.append(int(self.tableWidget.item(i,2).text()))
+            output = main.SPN(inputInfo,arrivaltime,workload)
+            burstTime, waitingTime, turnaroundTime, normalizedTT, consumedPower = output
+            for i in range(processnum):
+                item = QTableWidgetItem(str(arrivaltime[i]))
+                item.setTextAlignment(Qt.AlignCenter)
+                self.tableWidget_result.setItem(i,1,item)
+                item = QTableWidgetItem(str(burstTime[i]))
+                item.setTextAlignment(Qt.AlignCenter)
+                self.tableWidget_result.setItem(i,2,item)
+                item = QTableWidgetItem(str(waitingTime[i]))
+                item.setTextAlignment(Qt.AlignCenter)
+                self.tableWidget_result.setItem(i,3,item)
+                item = QTableWidgetItem(str(turnaroundTime[i]))
+                item.setTextAlignment(Qt.AlignCenter)
+                self.tableWidget_result.setItem(i,4,item)
+                item = QTableWidgetItem(str(normalizedTT[i]))
+                item.setTextAlignment(Qt.AlignCenter)
+                self.tableWidget_result.setItem(i,5,item)
+            
+
 
 
 if __name__ == "__main__":
