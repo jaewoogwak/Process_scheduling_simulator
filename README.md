@@ -1,6 +1,28 @@
-# Process_scheduling_simulator
-2023년 3학년 1학기 운영체제 팀 프로젝트
+# Process scheduling simulator
 
-# 곽 재 우 나쁘다
+Operating System team project for the first semester of 2023
 
-<img src="https://img.shields.io/badge/파이썬-61DAFB?style=flat&logo=React&logoColor=white"/>
+## 👫 Team
+
+-   [Jaewoo Gwak](https://github.com/jaewoogwak) (Project Leader)
+-   [Gyungbo Kim](https://github.com/Koz-cec)
+-   [Jia Bae](https://github.com/qowldk)
+-   [Sooin Hwang](https://github.com/s001n)
+
+## ⚙️ Algorithm
+
+-   FCFS
+-   Round Robin
+-   SPN
+-   SRTN
+-   HRRN
+-   RPN(Custom Algorithm)
+
+## 📺 UI
+
+## 🚀 Teck Stack
+
+-   Python3
+-   PyQt Designer
+
+## 📝 Report
