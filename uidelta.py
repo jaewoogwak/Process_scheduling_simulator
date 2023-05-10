@@ -665,7 +665,6 @@ class Ui_Dialog(QMainWindow):
                     if int(result[j][7][f1][1]) != -1:
                         item = QTableWidgetItem("P"+str(result[j][7][f1][1]+1))
                         item.setTextAlignment(Qt.AlignCenter)
-                        #item.setForeground(QColor(255,255,255))
                         color, textcolor = self.choosecolor(result[j][7][f1][1])
                         item.setForeground(textcolor)
                         item.setBackground(color)
