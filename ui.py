@@ -121,6 +121,7 @@ class Ui_Dialog(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+        self.setWindowTitle("Process Scheduling Simulator - Team OhYes")
         self.pushButton_coreapply.clicked.connect(self.pushapply)
         self.pushButton_padd.clicked.connect(self.pushprocessadd)
         self.pushButton_podd.clicked.connect(self.pushprocessodd)
@@ -412,12 +413,7 @@ class Ui_Dialog(QMainWindow):
         self.label_13.setText(_translate("Dialog", "Time Quantum"))
         self.pushButton_coreapply.setText(_translate("Dialog", "APPLY"))
 
-    '''def pushapply(self):
-        loop = QEventLoop()
-        QTimer.singleShot(1000, loop.quit) # msec
-        loop.exec_()
-        self.pushapplydelay()'''
-    def stop(self):
+    def stop(self): #멈춰!!!하는 함수. 하지만 사용 안함.
         QApplication.quit()
 
     def pushapply(self): #core apply 버튼을 누를 시 입력된 값에 맞게 tablewidget, tablewidget_gantt 변경하는 함수
@@ -515,7 +511,7 @@ class Ui_Dialog(QMainWindow):
         self.tableWidget.setRowCount(processnum)
         self.tableWidget_result.setRowCount(processnum)
 
-    def choosecolor(self, n):
+    def choosecolor(self, n): #색상 자동 선택함수. 반환 튜플이니까 잘쓰세요
         index = n % 49
         return (colors[index], text_colors[index])
 
