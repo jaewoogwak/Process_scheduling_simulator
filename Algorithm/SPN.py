@@ -54,11 +54,11 @@ def SPN(inputInfo, arrivalTime, workLoad):
 
         rqTemp = []
         for _ in range(readyQueue.qsize()):
-            p = readyQueue.get()
-            rqTemp.append(p)
+            w, p = readyQueue.get()
+            rqTemp.append((w, p))
 
-        for p in rqTemp:
-            readyQueue.put(p)
+        for w, p in rqTemp:
+            readyQueue.put((w, p))
 
         res = [arrivalTime[:], burstTime[:], waitingTime[:],
                consumedPower, completed[:], workLoad[:], rqTemp[:]]
