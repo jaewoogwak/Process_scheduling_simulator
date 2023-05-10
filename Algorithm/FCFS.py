@@ -110,10 +110,7 @@ def FCFS(inputInfo: tuple, arrivalTime: list, workLoad: list):
             if workLoad[p] <= 0:
                 workLoad[p] = 0
 
-        runningInfo = []
-        for i in range(len(processor)):
-            runningInfo.append((i, processor[i][2]))
-
+        runningInfo = [(i, processor[i][2]) for i in range(len(processor))]
         res = res + [runningInfo]
         result.append(res[:])
 
