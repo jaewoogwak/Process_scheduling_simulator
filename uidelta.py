@@ -425,6 +425,7 @@ class Ui_Dialog(QMainWindow):
                 workload.append(int(self.tableWidget.item(i,2).text()))
             output = main.FCFS(inputInfo,arrivaltime,workload)
             burstTime, waitingTime, turnaroundTime, normalizedTT, consumedPower, result = output
+            print(result)
             header = self.tableWidget_gantt.horizontalHeader()
             for j in range(len(result)):
                 self.delay(100)
@@ -433,11 +434,12 @@ class Ui_Dialog(QMainWindow):
                 header.resizeSection(j+1,40)
                 self.tableWidget_gantt.setHorizontalHeaderItem(j+1,item)
                 header.resizeSection(0,100)
-                '''for f1 in range(len(result[7])):
-                        if result[7][f1][0] != -1:
-                             item = QTableWidgetItem("P"+str(f1+1))
-                             item.setTextAlignment(Qt.AlignCenter)
-                             self.tableWidget_gantt.setItem(f1,j+1,item)'''
+                for f1 in range(len(result[7])):
+                    print(result[7][f1][0])
+                    if result[7][f1][0] != -1:
+                        item = QTableWidgetItem("P"+str(f1+1))
+                        item.setTextAlignment(Qt.AlignCenter)
+                        self.tableWidget_gantt.setItem(f1,j+1,item)
                 self.tableWidget_gantt.horizontalScrollBar().setMaximum(self.tableWidget_gantt.horizontalScrollBar().maximum())
                 self.tableWidget_gantt.horizontalScrollBar().setValue(self.tableWidget_gantt.horizontalScrollBar().maximum())
                 self.label_nowtime.setText(str(j))
