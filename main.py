@@ -36,14 +36,10 @@ def isCoreInputValid(core, P, E):
     return False
 
 
-# for i in range(100):
-#     print(random.randint(0, 100))
-
-
 if __name__ == "__main__":
     process = 5
-    core = 1
-    Pcore = 0
+    core = 2
+    Pcore = 1
     Ecore = 1
     timeQuantum = 2  # optional value(parameter)
     if not isCoreInputValid(core, Pcore, Ecore):
@@ -61,7 +57,7 @@ if __name__ == "__main__":
 
         else:
             # 프로세스 스케줄링 실행
-            output = FCFS(inputInfo, arrivalTime, workLoad)
+            output = RR(inputInfo, arrivalTime, workLoad, timeQuantum)
             burstTime, waitingTime, turnaroundTime, normalizedTT, consumedPower, result = output
 
             print("실행시간", burstTime)

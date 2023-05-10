@@ -36,6 +36,7 @@ def HRRN(inputInfo, arrivalTime, workLoad):
 
     while not isFinished(completed):
         p = 0
+        res = []
 
         print("---", currentTime, "초---", workLoad)
 
@@ -51,8 +52,8 @@ def HRRN(inputInfo, arrivalTime, workLoad):
                     processor[i][0] = False
                     processor[i][2] = -1
 
-        result.append([arrivalTime[:], burstTime[:], waitingTime[:],
-                      consumedPower, completed[:], workLoad[:], readyQueue[:]])
+        res.append([arrivalTime[:], burstTime[:], waitingTime[:],
+                    consumedPower, completed[:], workLoad[:], readyQueue[:]])
 
         if isFinished(completed):
             print("종료!")
@@ -122,6 +123,13 @@ def HRRN(inputInfo, arrivalTime, workLoad):
 
             if workLoad[p] <= 0:
                 workLoad[p] = 0
+
+        runningInfo = []
+        for i in range(len(processor)):
+            runningInfo.append((i, processor[i][2]))
+
+        res.append(runningInfo)
+        result.append(res)
 
         # 현재 시간 증가
         currentTime += 1
