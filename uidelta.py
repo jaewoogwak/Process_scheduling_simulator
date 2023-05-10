@@ -13,6 +13,110 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QColor, QBrush
 import main
 
+colors = [
+    QColor(255, 0, 0),     # Red
+    QColor(0, 255, 0),     # Green
+    QColor(0, 0, 255),     # Blue
+    QColor(255, 255, 0),   # Yellow
+    QColor(255, 0, 255),   # Magenta
+    QColor(0, 255, 255),   # Cyan
+    QColor(255, 255, 255), # White
+    QColor(0, 0, 0),       # Black
+    QColor(128, 128, 128), # Gray
+    QColor(255, 165, 0),   # Orange
+    QColor(128, 0, 128),   # Purple
+    QColor(128, 128, 0),   # Olive
+    QColor(0, 128, 128),   # Teal
+    QColor(210, 105, 30),  # Chocolate
+    QColor(222, 184, 135), # Burlywood
+    QColor(205, 133, 63),  # Peru
+    QColor(245, 222, 179), # Wheat
+    QColor(244, 164, 96),  # Sandybrown
+    QColor(255, 228, 181), # Moccasin
+    QColor(255, 250, 205), # Lemonchiffon
+    QColor(255, 192, 203), # Pink
+    QColor(255, 182, 193), # Lightpink
+    QColor(250, 128, 114), # Salmon
+    QColor(255, 99, 71),   # Tomato
+    QColor(139, 69, 19),   # Saddlebrown
+    QColor(128, 0, 0),     # Maroon
+    QColor(0, 128, 0),     # Green (dark)
+    QColor(0, 0, 128),     # Navy
+    QColor(123, 104, 238), # Mediumslateblue
+    QColor(106, 90, 205),  # Slateblue
+    QColor(72, 61, 139),   # Darkslateblue
+    QColor(65, 105, 225),  # Royalblue
+    QColor(30, 144, 255),  # Dodgerblue
+    QColor(0, 191, 255),   # Deepskyblue
+    QColor(135, 206, 235), # Skyblue
+    QColor(0, 255, 127),   # Springgreen
+    QColor(127, 255, 0),   # Chartreuse
+    QColor(154, 205, 50),  # Yellowgreen
+    QColor(50, 205, 50),   # Limegreen
+    QColor(34, 139, 34),   # Forestgreen
+    QColor(0, 128, 128),   # Teal (dark)
+    QColor(70, 130, 180),  # Steelblue
+    QColor(95, 158, 160),  # Cadetblue
+    QColor(0, 255, 255),   # Cyan (bright)
+    QColor(127, 255, 212), # Aquamarine
+    QColor(175, 238, 238), # Paleturquoise
+    QColor(72, 209, 204),  # Mediumturquoise
+    QColor(0, 139, 139),   # Darkturquoise
+    QColor(128, 128, 0)    # Olive (dark) 49번째(인덱스48)
+]
+
+text_colors = [
+    QColor(255, 255, 255), # Red
+    QColor(0, 0, 0),       # Green
+    QColor(255, 255, 255), # Blue
+    QColor(0, 0, 0),       # Yellow
+    QColor(255, 255, 255), # Magenta
+    QColor(0, 0, 0),       # Cyan
+    QColor(0, 0, 0),       # White
+    QColor(255, 255, 255), # Black
+    QColor(0, 0, 0),       # Gray
+    QColor(0, 0, 0),       # Orange
+    QColor(255, 255, 255), # Purple
+    QColor(255, 255, 255), # Olive
+    QColor(255, 255, 255), # Teal
+    QColor(255, 255, 255), # Chocolate
+    QColor(0, 0, 0),       # Burlywood
+    QColor(0, 0, 0),       # Peru
+    QColor(0, 0, 0),       # Wheat
+    QColor(0, 0, 0),       # Sandybrown
+    QColor(0, 0, 0),       # Moccasin
+    QColor(0, 0, 0),       # Lemonchiffon
+    QColor(0, 0, 0),       # Pink
+    QColor(0, 0, 0),       # Lightpink
+    QColor(0, 0, 0),       # Salmon
+    QColor(0, 0, 0),       # Tomato
+    QColor(255, 255, 255), # Saddlebrown
+    QColor(255, 255, 255), # Maroon
+    QColor(255, 255, 255), # Green (dark)
+    QColor(255, 255, 255), # Navy
+    QColor(255, 255, 255), # Mediumslateblue
+    QColor(255, 255, 255), # Slateblue
+    QColor(255, 255, 255), # Darkslateblue
+    QColor(255, 255, 255), # Royalblue
+    QColor(255, 255, 255), # Dodgerblue
+    QColor(0, 0, 0),       # Deepskyblue
+    QColor(0, 0, 0),       # Skyblue
+    QColor(0, 0, 0),       # Springgreen
+    QColor(0, 0, 0),       # Chartreuse
+    QColor(0, 0, 0),       # Yellowgreen
+    QColor(255, 255, 255), # Limegreen
+    QColor(255, 255, 255), # Forestgreen
+    QColor(255, 255, 255), # Teal (dark)
+    QColor(255, 255, 255), # Steelblue
+    QColor(0, 0, 0),       # Cadetblue
+    QColor(0, 0, 0),       # Cyan (bright)
+    QColor(0, 0, 0),       # Aquamarine
+    QColor(0, 0, 0),       # Paleturquoise
+    QColor(0, 0, 0),       # Mediumturquoise
+    QColor(255, 255, 255),  # Darkturquoise 
+    QColor(0, 0, 0) #olive
+    ]
+
 class Ui_Dialog(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -411,6 +515,10 @@ class Ui_Dialog(QMainWindow):
         self.tableWidget.setRowCount(processnum)
         self.tableWidget_result.setRowCount(processnum)
 
+    def choosecolor(self, n):
+        index = n % 49
+        return (colors[index], text_colors[index])
+
     def pushrun(self): # run 버튼 클릭시 이벤트
         global processnum
         selected_algo = self.comboBox.currentIndex()
@@ -434,11 +542,14 @@ class Ui_Dialog(QMainWindow):
                 header.resizeSection(j+1,40)
                 self.tableWidget_gantt.setHorizontalHeaderItem(j+1,item)
                 header.resizeSection(0,100)
-                for f1 in range(len(result[7])):
-                    print(result[7][f1][0])
-                    if result[7][f1][0] != -1:
-                        item = QTableWidgetItem("P"+str(f1+1))
+                for f1 in range(len(result[j][7])):
+                    if int(result[j][7][f1][1]) != -1:
+                        item = QTableWidgetItem("P"+str(result[j][7][f1][1]+1))
                         item.setTextAlignment(Qt.AlignCenter)
+                        #item.setForeground(QColor(255,255,255))
+                        color, textcolor = self.choosecolor(result[j][7][f1][1])
+                        item.setForeground(textcolor)
+                        item.setBackground(color)
                         self.tableWidget_gantt.setItem(f1,j+1,item)
                 self.tableWidget_gantt.horizontalScrollBar().setMaximum(self.tableWidget_gantt.horizontalScrollBar().maximum())
                 self.tableWidget_gantt.horizontalScrollBar().setValue(self.tableWidget_gantt.horizontalScrollBar().maximum())
@@ -470,35 +581,67 @@ class Ui_Dialog(QMainWindow):
                         item = QTableWidgetItem("DONE")
                         item.setTextAlignment(Qt.AlignCenter)
                         self.tableWidget_result.setItem(i,6,item)
-        if selected_algo == 1:
+        elif selected_algo == 1:
             core = pcore + ecore
             generate = main.generateProcessor(core,pcore,ecore)
             inputInfo = (processnum, generate)
-            timequantum = int(self.textEdit_time_quantum.toPlainText())
+            timequantum = self.textEdit_time_quantum.toPlainText()
             arrivaltime = []
             workload = []
             for i in range(processnum):
                 arrivaltime.append(int(self.tableWidget.item(i,1).text()))
                 workload.append(int(self.tableWidget.item(i,2).text()))
-            output = main.RR(inputInfo,arrivaltime,workload, timequantum)
-            burstTime, waitingTime, turnaroundTime, normalizedTT, consumedPower = output
-            for i in range(processnum):
-                item = QTableWidgetItem(str(arrivaltime[i]))
-                item.setTextAlignment(Qt.AlignCenter)
-                self.tableWidget_result.setItem(i,1,item)
-                item = QTableWidgetItem(str(burstTime[i]))
-                item.setTextAlignment(Qt.AlignCenter)
-                self.tableWidget_result.setItem(i,2,item)
-                item = QTableWidgetItem(str(waitingTime[i]))
-                item.setTextAlignment(Qt.AlignCenter)
-                self.tableWidget_result.setItem(i,3,item)
-                item = QTableWidgetItem(str(turnaroundTime[i]))
-                item.setTextAlignment(Qt.AlignCenter)
-                self.tableWidget_result.setItem(i,4,item)
-                item = QTableWidgetItem(str(normalizedTT[i]))
-                item.setTextAlignment(Qt.AlignCenter)
-                self.tableWidget_result.setItem(i,5,item)
-        if selected_algo == 2:
+            output = main.RR(inputInfo,arrivaltime,workload, int(timequantum))
+            burstTime, waitingTime, turnaroundTime, normalizedTT, consumedPower, result = output
+            print(result)
+            header = self.tableWidget_gantt.horizontalHeader()
+            for j in range(len(result)):
+                self.delay(100)
+                item = QTableWidgetItem(str(j))
+                self.tableWidget_gantt.setColumnCount(j+2)
+                header.resizeSection(j+1,40)
+                self.tableWidget_gantt.setHorizontalHeaderItem(j+1,item)
+                header.resizeSection(0,100)
+                for f1 in range(len(result[j][7])):
+                    if int(result[j][7][f1][1]) != -1:
+                        item = QTableWidgetItem("P"+str(result[j][7][f1][1]+1))
+                        item.setTextAlignment(Qt.AlignCenter)
+                        #item.setForeground(QColor(255,255,255))
+                        color, textcolor = self.choosecolor(result[j][7][f1][1])
+                        item.setForeground(textcolor)
+                        item.setBackground(color)
+                        self.tableWidget_gantt.setItem(f1,j+1,item)
+                self.tableWidget_gantt.horizontalScrollBar().setMaximum(self.tableWidget_gantt.horizontalScrollBar().maximum())
+                self.tableWidget_gantt.horizontalScrollBar().setValue(self.tableWidget_gantt.horizontalScrollBar().maximum())
+                self.label_nowtime.setText(str(j))
+                self.label_usagewatt.setText(str(result[j][3]))
+                #self.tableWidget_gantt.setItemDelegate
+                for i in range(len(result[j][6])):
+                    result[j][6][i] += 1
+                self.label_readyqueue.setText(str(result[j][6]))
+                for i in range(processnum):
+                    item = QTableWidgetItem(str(result[j][0][i]))
+                    item.setTextAlignment(Qt.AlignCenter)
+                    self.tableWidget_result.setItem(i,1,item)
+                    item = QTableWidgetItem(str(result[j][1][i]))
+                    item.setTextAlignment(Qt.AlignCenter)
+                    self.tableWidget_result.setItem(i,2,item)
+                    item = QTableWidgetItem(str(result[j][2][i]))
+                    item.setTextAlignment(Qt.AlignCenter)
+                    self.tableWidget_result.setItem(i,3,item)
+                    if result[j][4][i] == True:
+                        item = QTableWidgetItem(str(turnaroundTime[i]))
+                        item.setTextAlignment(Qt.AlignCenter)
+                        self.tableWidget_result.setItem(i,4,item)
+                    if result[j][4][i] == True:
+                        item = QTableWidgetItem(str(normalizedTT[i]))
+                        item.setTextAlignment(Qt.AlignCenter)
+                        self.tableWidget_result.setItem(i,5,item)
+                    if result[j][4][i] == True:
+                        item = QTableWidgetItem("DONE")
+                        item.setTextAlignment(Qt.AlignCenter)
+                        self.tableWidget_result.setItem(i,6,item)
+        elif selected_algo == 2:
             core = pcore + ecore
             generate = main.generateProcessor(core,pcore,ecore)
             inputInfo = (processnum, generate)
@@ -508,43 +651,233 @@ class Ui_Dialog(QMainWindow):
                 arrivaltime.append(int(self.tableWidget.item(i,1).text()))
                 workload.append(int(self.tableWidget.item(i,2).text()))
             output = main.SPN(inputInfo,arrivaltime,workload)
-            burstTime, waitingTime, turnaroundTime, normalizedTT, consumedPower = output
+            burstTime, waitingTime, turnaroundTime, normalizedTT, consumedPower, result = output
+            print(result)
+            header = self.tableWidget_gantt.horizontalHeader()
+            for j in range(len(result)):
+                self.delay(100)
+                item = QTableWidgetItem(str(j))
+                self.tableWidget_gantt.setColumnCount(j+2)
+                header.resizeSection(j+1,40)
+                self.tableWidget_gantt.setHorizontalHeaderItem(j+1,item)
+                header.resizeSection(0,100)
+                for f1 in range(len(result[j][7])):
+                    if int(result[j][7][f1][1]) != -1:
+                        item = QTableWidgetItem("P"+str(result[j][7][f1][1]+1))
+                        item.setTextAlignment(Qt.AlignCenter)
+                        #item.setForeground(QColor(255,255,255))
+                        color, textcolor = self.choosecolor(result[j][7][f1][1])
+                        item.setForeground(textcolor)
+                        item.setBackground(color)
+                        self.tableWidget_gantt.setItem(f1,j+1,item)
+                self.tableWidget_gantt.horizontalScrollBar().setMaximum(self.tableWidget_gantt.horizontalScrollBar().maximum())
+                self.tableWidget_gantt.horizontalScrollBar().setValue(self.tableWidget_gantt.horizontalScrollBar().maximum())
+                self.label_nowtime.setText(str(j))
+                self.label_usagewatt.setText(str(result[j][3]))
+                #self.tableWidget_gantt.setItemDelegate
+                for i in range(len(result[j][6])):
+                    result[j][6][i] += 1
+                self.label_readyqueue.setText(str(result[j][6]))
+                for i in range(processnum):
+                    item = QTableWidgetItem(str(result[j][0][i]))
+                    item.setTextAlignment(Qt.AlignCenter)
+                    self.tableWidget_result.setItem(i,1,item)
+                    item = QTableWidgetItem(str(result[j][1][i]))
+                    item.setTextAlignment(Qt.AlignCenter)
+                    self.tableWidget_result.setItem(i,2,item)
+                    item = QTableWidgetItem(str(result[j][2][i]))
+                    item.setTextAlignment(Qt.AlignCenter)
+                    self.tableWidget_result.setItem(i,3,item)
+                    if result[j][4][i] == True:
+                        item = QTableWidgetItem(str(turnaroundTime[i]))
+                        item.setTextAlignment(Qt.AlignCenter)
+                        self.tableWidget_result.setItem(i,4,item)
+                    if result[j][4][i] == True:
+                        item = QTableWidgetItem(str(normalizedTT[i]))
+                        item.setTextAlignment(Qt.AlignCenter)
+                        self.tableWidget_result.setItem(i,5,item)
+                    if result[j][4][i] == True:
+                        item = QTableWidgetItem("DONE")
+                        item.setTextAlignment(Qt.AlignCenter)
+                        self.tableWidget_result.setItem(i,6,item)
+        elif selected_algo == 3:
+            core = pcore + ecore
+            generate = main.generateProcessor(core,pcore,ecore)
+            inputInfo = (processnum, generate)
+            arrivaltime = []
+            workload = []
             for i in range(processnum):
-                item = QTableWidgetItem(str(arrivaltime[i]))
-                item.setTextAlignment(Qt.AlignCenter)
-                self.tableWidget_result.setItem(i,1,item)
-                item = QTableWidgetItem(str(burstTime[i]))
-                item.setTextAlignment(Qt.AlignCenter)
-                self.tableWidget_result.setItem(i,2,item)
-                item = QTableWidgetItem(str(waitingTime[i]))
-                item.setTextAlignment(Qt.AlignCenter)
-                self.tableWidget_result.setItem(i,3,item)
-                item = QTableWidgetItem(str(turnaroundTime[i]))
-                item.setTextAlignment(Qt.AlignCenter)
-                self.tableWidget_result.setItem(i,4,item)
-                item = QTableWidgetItem(str(normalizedTT[i]))
-                item.setTextAlignment(Qt.AlignCenter)
-                self.tableWidget_result.setItem(i,5,item)
+                arrivaltime.append(int(self.tableWidget.item(i,1).text()))
+                workload.append(int(self.tableWidget.item(i,2).text()))
+            output = main.SRTN(inputInfo,arrivaltime,workload)
+            burstTime, waitingTime, turnaroundTime, normalizedTT, consumedPower, result = output
+            print(result)
+            header = self.tableWidget_gantt.horizontalHeader()
+            for j in range(len(result)):
+                self.delay(100)
+                item = QTableWidgetItem(str(j))
+                self.tableWidget_gantt.setColumnCount(j+2)
+                header.resizeSection(j+1,40)
+                self.tableWidget_gantt.setHorizontalHeaderItem(j+1,item)
+                header.resizeSection(0,100)
+                for f1 in range(len(result[j][7])):
+                    if int(result[j][7][f1][1]) != -1:
+                        item = QTableWidgetItem("P"+str(result[j][7][f1][1]+1))
+                        item.setTextAlignment(Qt.AlignCenter)
+                        #item.setForeground(QColor(255,255,255))
+                        color, textcolor = self.choosecolor(result[j][7][f1][1])
+                        item.setForeground(textcolor)
+                        item.setBackground(color)
+                        self.tableWidget_gantt.setItem(f1,j+1,item)
+                self.tableWidget_gantt.horizontalScrollBar().setMaximum(self.tableWidget_gantt.horizontalScrollBar().maximum())
+                self.tableWidget_gantt.horizontalScrollBar().setValue(self.tableWidget_gantt.horizontalScrollBar().maximum())
+                self.label_nowtime.setText(str(j))
+                self.label_usagewatt.setText(str(result[j][3]))
+                #self.tableWidget_gantt.setItemDelegate
+                for i in range(len(result[j][6])):
+                    result[j][6][i] += 1
+                self.label_readyqueue.setText(str(result[j][6]))
+                for i in range(processnum):
+                    item = QTableWidgetItem(str(result[j][0][i]))
+                    item.setTextAlignment(Qt.AlignCenter)
+                    self.tableWidget_result.setItem(i,1,item)
+                    item = QTableWidgetItem(str(result[j][1][i]))
+                    item.setTextAlignment(Qt.AlignCenter)
+                    self.tableWidget_result.setItem(i,2,item)
+                    item = QTableWidgetItem(str(result[j][2][i]))
+                    item.setTextAlignment(Qt.AlignCenter)
+                    self.tableWidget_result.setItem(i,3,item)
+                    if result[j][4][i] == True:
+                        item = QTableWidgetItem(str(turnaroundTime[i]))
+                        item.setTextAlignment(Qt.AlignCenter)
+                        self.tableWidget_result.setItem(i,4,item)
+                    if result[j][4][i] == True:
+                        item = QTableWidgetItem(str(normalizedTT[i]))
+                        item.setTextAlignment(Qt.AlignCenter)
+                        self.tableWidget_result.setItem(i,5,item)
+                    if result[j][4][i] == True:
+                        item = QTableWidgetItem("DONE")
+                        item.setTextAlignment(Qt.AlignCenter)
+                        self.tableWidget_result.setItem(i,6,item)
+        elif selected_algo == 4:
+            core = pcore + ecore
+            generate = main.generateProcessor(core,pcore,ecore)
+            inputInfo = (processnum, generate)
+            arrivaltime = []
+            workload = []
+            for i in range(processnum):
+                arrivaltime.append(int(self.tableWidget.item(i,1).text()))
+                workload.append(int(self.tableWidget.item(i,2).text()))
+            output = main.HRRN(inputInfo,arrivaltime,workload)
+            burstTime, waitingTime, turnaroundTime, normalizedTT, consumedPower, result = output
+            print(result)
+            header = self.tableWidget_gantt.horizontalHeader()
+            for j in range(len(result)):
+                self.delay(100)
+                item = QTableWidgetItem(str(j))
+                self.tableWidget_gantt.setColumnCount(j+2)
+                header.resizeSection(j+1,40)
+                self.tableWidget_gantt.setHorizontalHeaderItem(j+1,item)
+                header.resizeSection(0,100)
+                for f1 in range(len(result[j][7])):
+                    if int(result[j][7][f1][1]) != -1:
+                        item = QTableWidgetItem("P"+str(result[j][7][f1][1]+1))
+                        item.setTextAlignment(Qt.AlignCenter)
+                        #item.setForeground(QColor(255,255,255))
+                        color, textcolor = self.choosecolor(result[j][7][f1][1])
+                        item.setForeground(textcolor)
+                        item.setBackground(color)
+                        self.tableWidget_gantt.setItem(f1,j+1,item)
+                self.tableWidget_gantt.horizontalScrollBar().setMaximum(self.tableWidget_gantt.horizontalScrollBar().maximum())
+                self.tableWidget_gantt.horizontalScrollBar().setValue(self.tableWidget_gantt.horizontalScrollBar().maximum())
+                self.label_nowtime.setText(str(j))
+                self.label_usagewatt.setText(str(result[j][3]))
+                #self.tableWidget_gantt.setItemDelegate
+                for i in range(len(result[j][6])):
+                    result[j][6][i] += 1
+                self.label_readyqueue.setText(str(result[j][6]))
+                for i in range(processnum):
+                    item = QTableWidgetItem(str(result[j][0][i]))
+                    item.setTextAlignment(Qt.AlignCenter)
+                    self.tableWidget_result.setItem(i,1,item)
+                    item = QTableWidgetItem(str(result[j][1][i]))
+                    item.setTextAlignment(Qt.AlignCenter)
+                    self.tableWidget_result.setItem(i,2,item)
+                    item = QTableWidgetItem(str(result[j][2][i]))
+                    item.setTextAlignment(Qt.AlignCenter)
+                    self.tableWidget_result.setItem(i,3,item)
+                    if result[j][4][i] == True:
+                        item = QTableWidgetItem(str(turnaroundTime[i]))
+                        item.setTextAlignment(Qt.AlignCenter)
+                        self.tableWidget_result.setItem(i,4,item)
+                    if result[j][4][i] == True:
+                        item = QTableWidgetItem(str(normalizedTT[i]))
+                        item.setTextAlignment(Qt.AlignCenter)
+                        self.tableWidget_result.setItem(i,5,item)
+                    if result[j][4][i] == True:
+                        item = QTableWidgetItem("DONE")
+                        item.setTextAlignment(Qt.AlignCenter)
+                        self.tableWidget_result.setItem(i,6,item)
+        elif selected_algo == 5:
+            core = pcore + ecore
+            generate = main.generateProcessor(core,pcore,ecore)
+            inputInfo = (processnum, generate)
+            arrivaltime = []
+            workload = []
+            for i in range(processnum):
+                arrivaltime.append(int(self.tableWidget.item(i,1).text()))
+                workload.append(int(self.tableWidget.item(i,2).text()))
+            output = main.RPN(inputInfo,arrivaltime,workload)
+            burstTime, waitingTime, turnaroundTime, normalizedTT, consumedPower, result = output
+            print(result)
+            header = self.tableWidget_gantt.horizontalHeader()
+            for j in range(len(result)):
+                self.delay(100)
+                item = QTableWidgetItem(str(j))
+                self.tableWidget_gantt.setColumnCount(j+2)
+                header.resizeSection(j+1,40)
+                self.tableWidget_gantt.setHorizontalHeaderItem(j+1,item)
+                header.resizeSection(0,100)
+                for f1 in range(len(result[j][7])):
+                    if int(result[j][7][f1][1]) != -1:
+                        item = QTableWidgetItem("P"+str(result[j][7][f1][1]+1))
+                        item.setTextAlignment(Qt.AlignCenter)
+                        #item.setForeground(QColor(255,255,255))
+                        color, textcolor = self.choosecolor(result[j][7][f1][1])
+                        item.setForeground(textcolor)
+                        item.setBackground(color)
+                        self.tableWidget_gantt.setItem(f1,j+1,item)
+                self.tableWidget_gantt.horizontalScrollBar().setMaximum(self.tableWidget_gantt.horizontalScrollBar().maximum())
+                self.tableWidget_gantt.horizontalScrollBar().setValue(self.tableWidget_gantt.horizontalScrollBar().maximum())
+                self.label_nowtime.setText(str(j))
+                self.label_usagewatt.setText(str(result[j][3]))
+                #self.tableWidget_gantt.setItemDelegate
+                for i in range(len(result[j][6])):
+                    result[j][6][i] += 1
+                self.label_readyqueue.setText(str(result[j][6]))
+                for i in range(processnum):
+                    item = QTableWidgetItem(str(result[j][0][i]))
+                    item.setTextAlignment(Qt.AlignCenter)
+                    self.tableWidget_result.setItem(i,1,item)
+                    item = QTableWidgetItem(str(result[j][1][i]))
+                    item.setTextAlignment(Qt.AlignCenter)
+                    self.tableWidget_result.setItem(i,2,item)
+                    item = QTableWidgetItem(str(result[j][2][i]))
+                    item.setTextAlignment(Qt.AlignCenter)
+                    self.tableWidget_result.setItem(i,3,item)
+                    if result[j][4][i] == True:
+                        item = QTableWidgetItem(str(turnaroundTime[i]))
+                        item.setTextAlignment(Qt.AlignCenter)
+                        self.tableWidget_result.setItem(i,4,item)
+                    if result[j][4][i] == True:
+                        item = QTableWidgetItem(str(normalizedTT[i]))
+                        item.setTextAlignment(Qt.AlignCenter)
+                        self.tableWidget_result.setItem(i,5,item)
+                    if result[j][4][i] == True:
+                        item = QTableWidgetItem("DONE")
+                        item.setTextAlignment(Qt.AlignCenter)
+                        self.tableWidget_result.setItem(i,6,item)
             
-class MyDelegate(QStyledItemDelegate):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-
-    def paint(self, painter, option, index):
-        # 인덱스의 값을 가져옴
-        value = index.data()
-
-        # 값에 따라 배경 색상을 다르게 지정
-        if value == "P1":
-            color = QColor(255, 0, 0)
-        elif value == "P2":
-            color = QColor(0, 255, 0)
-        elif value == "P3":
-            color = QColor(0, 0, 255)
-
-        # 배경 색상을 그림
-        painter.fillRect(option.rect, QBrush(color))
-
 if __name__ == "__main__":
     global pcore, ecore, processnum
     pcore, ecore, processnum = 0,0,0
