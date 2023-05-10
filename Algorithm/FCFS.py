@@ -53,6 +53,10 @@ def FCFS(inputInfo: tuple, arrivalTime: list, workLoad: list):
 
         if isFinished(completed):
             print("종료!")
+            temp = [(r[0], -1) for r in runningInfo]
+            res = [arrivalTime[:], burstTime[:], waitingTime[:],
+                   consumedPower, completed[:], workLoad[:], readyQueue[:], temp]
+            result.append(res)
             break
 
         # Ready queue에 넣기
