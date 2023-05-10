@@ -61,7 +61,7 @@ if __name__ == "__main__":
 
         else:
             # 프로세스 스케줄링 실행
-            output = RR(inputInfo, arrivalTime, workLoad, 2)
+            output = FCFS(inputInfo, arrivalTime, workLoad)
             burstTime, waitingTime, turnaroundTime, normalizedTT, consumedPower, result = output
 
             print("실행시간", burstTime)
