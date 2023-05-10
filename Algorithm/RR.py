@@ -59,11 +59,15 @@ def RR(inputInfo, arrivalTime, workLoad, timeQuantum):
                     processor[i][2] = -1
                     processor[i][3] = 0
 
-        res.append([arrivalTime[:], burstTime[:], waitingTime[:],
-                    consumedPower, completed[:], workLoad[:], readyQueue[:]])
+        res = [arrivalTime[:], burstTime[:], waitingTime[:],
+               consumedPower, completed[:], workLoad[:], readyQueue[:]]
 
         if isFinished(completed):
             print("종료!")
+            temp = [(r[0], -1) for r in runningInfo]
+            res = [arrivalTime[:], burstTime[:], waitingTime[:],
+                   consumedPower, completed[:], workLoad[:], readyQueue[:], temp]
+            result.append(res)
             break
 
         # 선점당할 프로세스 있는지 확인
@@ -140,12 +144,9 @@ def RR(inputInfo, arrivalTime, workLoad, timeQuantum):
             if workLoad[p] <= 0:
                 workLoad[p] = 0
 
-        runningInfo = []
-        for i in range(len(processor)):
-            runningInfo.append((i, processor[i][2]))
-
-        res.append(runningInfo)
-        result.append(res)
+        runningInfo = [(i, processor[i][2]) for i in range(len(processor))]
+        res = res + [runningInfo]
+        result.append(res[:])
 
         # 현재 시간 증가
         currentTime += 1
