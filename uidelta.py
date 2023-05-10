@@ -361,6 +361,11 @@ class Ui_Dialog(QMainWindow):
             self.count += 1
             ecore += 1
 
+    def delay(self):
+        loop = QEventLoop()
+        QTimer.singleShot(300, loop.quit) # msec
+        loop.exec_()
+
     def initprocess(self): #이거 안씀.
         self.tableWidget.setColumnCount(6)
         item = QTableWidgetItem("AT")
@@ -417,23 +422,35 @@ class Ui_Dialog(QMainWindow):
                 workload.append(int(self.tableWidget.item(i,2).text()))
             output = main.FCFS(inputInfo,arrivaltime,workload)
             burstTime, waitingTime, turnaroundTime, normalizedTT, consumedPower, result = output
-            for i in range(len(output)):
+            print(result)
+            for j in range(len(result)):
+                self.delay()
+                self.label_nowtime.setText(str(j))
+                self.label_usagewatt.setText(str(result[j][3]))
+                item = QTableWidgetItem(str(j))
+                
                 for i in range(processnum):
-                    item = QTableWidgetItem(str(arrivaltime[i]))
+                    item = QTableWidgetItem(str(result[j][0][i]))
                     item.setTextAlignment(Qt.AlignCenter)
                     self.tableWidget_result.setItem(i,1,item)
-                    item = QTableWidgetItem(str(burstTime[i]))
+                    item = QTableWidgetItem(str(result[j][1][i]))
                     item.setTextAlignment(Qt.AlignCenter)
                     self.tableWidget_result.setItem(i,2,item)
-                    item = QTableWidgetItem(str(waitingTime[i]))
+                    item = QTableWidgetItem(str(result[j][2][i]))
                     item.setTextAlignment(Qt.AlignCenter)
                     self.tableWidget_result.setItem(i,3,item)
-                    item = QTableWidgetItem(str(turnaroundTime[i]))
-                    item.setTextAlignment(Qt.AlignCenter)
-                    self.tableWidget_result.setItem(i,4,item)
-                    item = QTableWidgetItem(str(normalizedTT[i]))
-                    item.setTextAlignment(Qt.AlignCenter)
-                    self.tableWidget_result.setItem(i,5,item)
+                    if result[j][4][i] == True:
+                        item = QTableWidgetItem(str(turnaroundTime[i]))
+                        item.setTextAlignment(Qt.AlignCenter)
+                        self.tableWidget_result.setItem(i,4,item)
+                    if result[j][4][i] == True:
+                        item = QTableWidgetItem(str(normalizedTT[i]))
+                        item.setTextAlignment(Qt.AlignCenter)
+                        self.tableWidget_result.setItem(i,5,item)
+                    if result[j][4][i] == True:
+                        item = QTableWidgetItem("DONE")
+                        item.setTextAlignment(Qt.AlignCenter)
+                        self.tableWidget_result.setItem(i,6,item)
         if selected_algo == 1:
             core = pcore + ecore
             generate = main.generateProcessor(core,pcore,ecore)
