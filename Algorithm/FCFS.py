@@ -7,13 +7,11 @@ def isFinished(completed):
 
 
 def FCFS(inputInfo: tuple, arrivalTime: list, workLoad: list):
-
     N, core = inputInfo
     P = len(core)  # 프로세서
     readyQueue = []
 
     # 프로세스 할당 받은 여부, 코어의 종류, 현재 실행중인 프로세스 번호
-    # on = True, off = False
     processor = []
     for i in range(P):
         processor.append([False, core[i], -1])

@@ -62,9 +62,7 @@ def SRTN(inputInfo, arrivalTime, workLoad):
                 notArrived[i] = False
 
         # Ready queue에서 빼기
-
         for i in range(P):
-
             processor_full = 1  # 프로세서 전부 가동중인지 확인
             for k in range(P):
                 if processor[k][0] == False:
@@ -85,6 +83,7 @@ def SRTN(inputInfo, arrivalTime, workLoad):
             else:
                 p = -1
 
+            # 아직 프로세서 할당 못받은 프로세스라면, 할당 받음
             if not allocated[p] and processor[i][0] == False and p != -1:
                 processor[i][2] = p
                 processor[i][0] = True

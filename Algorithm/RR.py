@@ -7,15 +7,15 @@ def setPreemption(i, processor, allocated):
     processor[i][3] = 0
 
 
+def isFinished(completed):
+    for i in range(len(completed)):
+        if not completed[i]:
+            return False
+
+    return True
+
+
 def RR(inputInfo, arrivalTime, workLoad, timeQuantum):
-
-    def isFinished(completed):
-        for i in range(len(completed)):
-            if not completed[i]:
-                return False
-
-        return True
-
     N, core = inputInfo
     P = len(core)  # 프로세서
     readyQueue = []
@@ -78,7 +78,7 @@ def RR(inputInfo, arrivalTime, workLoad, timeQuantum):
                 preemption = True
                 processor[i][0] = False
 
-        # ready queue에 넣기
+        # Ready queue에 넣기
         for i in range(N):
             if arrivalTime[i] <= currentTime and not completed[i] and not allocated[i] and notArrived[i]:
                 readyQueue.append(i)
@@ -91,7 +91,7 @@ def RR(inputInfo, arrivalTime, workLoad, timeQuantum):
                 isOccurPreemption[p] = False
             preemption = False
 
-        # ready queue에서 빼기
+        # Ready queue에서 빼기
         for i in range(P):
             if not processor[i][0]:
                 if len(readyQueue) > 0:

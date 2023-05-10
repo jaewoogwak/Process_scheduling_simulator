@@ -14,6 +14,7 @@ def HRRN(inputInfo, arrivalTime, workLoad):
     N, core = inputInfo  # N: 프로세스
     P = len(core)  # P: 프로세서
     readyQueue = []
+
     # 프로세스 할당 받은 여부, 코어의 종류, 현재 실행중인 프로세스 번호, 현재 프로세서 on/off
     processor = []
     for i in range(P):
@@ -57,13 +58,13 @@ def HRRN(inputInfo, arrivalTime, workLoad):
             print("종료!")
             break
 
-        # ready queue에 넣기
+        # Ready queue에 넣기
         for i in range(N):
             if arrivalTime[i] <= currentTime and not completed[i] and not allocated[i] and notArrived[i]:
                 readyQueue.append(i)
                 notArrived[i] = False
 
-        # ready queue에서 빼기
+        # Ready queue에서 빼기
         for i in range(P):
             readyQueueTemp = []
 
@@ -91,6 +92,7 @@ def HRRN(inputInfo, arrivalTime, workLoad):
                         print("프로세스", p+1, "는 프로세서를", i+1, "할당받음")
                         allocated[p] = True
 
+        # 시동할 프로세서 있는지 확인
         for i in range(P):
             if prevState[i] == False and processor[i][0] == True:
                 print("### 프로세서", i+1, "ON ###")

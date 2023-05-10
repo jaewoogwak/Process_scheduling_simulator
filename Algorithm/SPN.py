@@ -1,21 +1,21 @@
 from queue import PriorityQueue
 
 
+def isFinished(completed):
+    for i in range(len(completed)):
+        if not completed[i]:
+            return False
+
+    return True
+
+
 def SPN(inputInfo, arrivalTime, workLoad):
-
-    def isFinished(completed):
-        for i in range(len(completed)):
-            if not completed[i]:
-                return False
-
-        return True
 
     N, core = inputInfo
     P = len(core)  # 프로세서
     readyQueue = PriorityQueue()
 
     # 프로세스 할당 받은 여부, 코어의 종류, 현재 실행중인 프로세스 번호
-    # on = True, off = False
     processor = []
     for i in range(P):
         processor.append([False, core[i], -1])
@@ -58,13 +58,13 @@ def SPN(inputInfo, arrivalTime, workLoad):
             print("종료!")
             break
 
-        # ready queue에 넣기
+        # Ready queue에 넣기
         for i in range(N):
             if arrivalTime[i] <= currentTime and not completed[i] and not allocated[i] and notArrived[i]:
                 readyQueue.put((workLoad[i], i))
                 notArrived[i] = False
 
-        # ready queue에서 빼기
+        # Ready queue에서 빼기
         for i in range(P):
             if not processor[i][0]:
                 if readyQueue.qsize() > 0:
@@ -77,6 +77,7 @@ def SPN(inputInfo, arrivalTime, workLoad):
                     print("프로세스", p+1, "는 프로세서를", i+1, "할당받음")
                     allocated[p] = True
 
+        # 시동할 프로세서 있는지 확인
         for i in range(P):
             if prevState[i] == False and processor[i][0] == True:
                 # print("### 프로세서", i+1, "ON ###")
