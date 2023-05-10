@@ -48,8 +48,8 @@ def FCFS(inputInfo: tuple, arrivalTime: list, workLoad: list):
                     processor[i][0] = False
                     processor[i][2] = -1
 
-        res.append([arrivalTime[:], burstTime[:], waitingTime[:],
-                    consumedPower, completed[:], workLoad[:], readyQueue[:]])
+        res = [arrivalTime[:], burstTime[:], waitingTime[:],
+               consumedPower, completed[:], workLoad[:], readyQueue[:]]
 
         if isFinished(completed):
             print("종료!")
@@ -110,7 +110,7 @@ def FCFS(inputInfo: tuple, arrivalTime: list, workLoad: list):
         for i in range(len(processor)):
             runningInfo.append((i, processor[i][2]))
 
-        res.append(runningInfo[:])
+        res = res + [runningInfo]
         result.append(res[:])
 
         # 현재 시간 증가
