@@ -313,6 +313,8 @@ class Ui_Dialog(QMainWindow):
         QTimer.singleShot(1000, loop.quit) # msec
         loop.exec_()
         self.pushapplydelay()'''
+    def stop(self):
+        QApplication.quit()
 
     def pushapply(self): #core apply 버튼을 누를 시 입력된 값에 맞게 tablewidget, tablewidget_gantt 변경하는 함수
         global pcore, ecore
