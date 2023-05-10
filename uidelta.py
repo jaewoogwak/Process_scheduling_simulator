@@ -10,6 +10,7 @@ import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QColor, QBrush
 import main
 
 class Ui_Dialog(QMainWindow):
@@ -307,13 +308,13 @@ class Ui_Dialog(QMainWindow):
         self.label_13.setText(_translate("Dialog", "Time Quantum"))
         self.pushButton_coreapply.setText(_translate("Dialog", "APPLY"))
 
-    def pushapply(self):
+    '''def pushapply(self):
         loop = QEventLoop()
         QTimer.singleShot(1000, loop.quit) # msec
         loop.exec_()
-        self.pushapplydelay()
+        self.pushapplydelay()'''
 
-    def pushapplydelay(self): #core apply 버튼을 누를 시 입력된 값에 맞게 tablewidget, tablewidget_gantt 변경하는 함수
+    def pushapply(self): #core apply 버튼을 누를 시 입력된 값에 맞게 tablewidget, tablewidget_gantt 변경하는 함수
         global pcore, ecore
         pcore, ecore = 0, 0
         self.tableWidget_core.clear()
@@ -361,9 +362,9 @@ class Ui_Dialog(QMainWindow):
             self.count += 1
             ecore += 1
 
-    def delay(self):
+    def delay(self, n): #delay 함수. n=msec단위
         loop = QEventLoop()
-        QTimer.singleShot(300, loop.quit) # msec
+        QTimer.singleShot(n, loop.quit) # msec
         loop.exec_()
 
     def initprocess(self): #이거 안씀.
@@ -408,7 +409,7 @@ class Ui_Dialog(QMainWindow):
         self.tableWidget.setRowCount(processnum)
         self.tableWidget_result.setRowCount(processnum)
 
-    def pushrun(self): # run 버튼 클릭시 이벤튼
+    def pushrun(self): # run 버튼 클릭시 이벤트
         global processnum
         selected_algo = self.comboBox.currentIndex()
         if selected_algo == 0:
@@ -422,13 +423,21 @@ class Ui_Dialog(QMainWindow):
                 workload.append(int(self.tableWidget.item(i,2).text()))
             output = main.FCFS(inputInfo,arrivaltime,workload)
             burstTime, waitingTime, turnaroundTime, normalizedTT, consumedPower, result = output
-            print(result)
+            header = self.tableWidget_gantt.horizontalHeader()
             for j in range(len(result)):
-                self.delay()
+                self.delay(100)
+                item = QTableWidgetItem(str(j))
+                self.tableWidget_gantt.setColumnCount(j+2)
+                header.resizeSection(j+1,40)
+                self.tableWidget_gantt.setHorizontalHeaderItem(j+1,item)
+                header.resizeSection(0,100)
+                self.tableWidget_gantt.horizontalScrollBar().setMaximum(self.tableWidget_gantt.horizontalScrollBar().maximum())
+                self.tableWidget_gantt.horizontalScrollBar().setValue(self.tableWidget_gantt.horizontalScrollBar().maximum())
                 self.label_nowtime.setText(str(j))
                 self.label_usagewatt.setText(str(result[j][3]))
-                item = QTableWidgetItem(str(j))
-                
+                for i in range(len(result[j][6])):
+                    result[j][6][i] += 1
+                self.label_readyqueue.setText(str(result[j][6]))
                 for i in range(processnum):
                     item = QTableWidgetItem(str(result[j][0][i]))
                     item.setTextAlignment(Qt.AlignCenter)
@@ -507,6 +516,24 @@ class Ui_Dialog(QMainWindow):
                 item.setTextAlignment(Qt.AlignCenter)
                 self.tableWidget_result.setItem(i,5,item)
             
+class MyDelegate(QStyledItemDelegate):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+    def paint(self, painter, option, index):
+        # 인덱스의 값을 가져옴
+        value = index.data()
+
+        # 값에 따라 배경 색상을 다르게 지정
+        if value == "P1":
+            color = QColor(255, 0, 0)
+        elif value == "P2":
+            color = QColor(0, 255, 0)
+        elif value == "P3":
+            color = QColor(0, 0, 255)
+
+        # 배경 색상을 그림
+        painter.fillRect(option.rect, QBrush(color))
 
 if __name__ == "__main__":
     global pcore, ecore, processnum
