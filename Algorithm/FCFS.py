@@ -110,8 +110,8 @@ def FCFS(inputInfo: tuple, arrivalTime: list, workLoad: list):
         for i in range(len(processor)):
             runningInfo.append((i, processor[i][2]))
 
-        res.append(runningInfo)
-        result.append(res)
+        res.append(runningInfo[:])
+        result.append(res[:])
 
         # 현재 시간 증가
         currentTime += 1
