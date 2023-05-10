@@ -11,11 +11,10 @@ def getResponseRatio(workLoad, currentTime, arrivalTime, pos):
 
 
 def HRRN(inputInfo, arrivalTime, workLoad):
-    N, core = inputInfo
-    P = len(core)  # 프로세서
+    N, core = inputInfo  # N: 프로세스
+    P = len(core)  # P: 프로세서
     readyQueue = []
     # 프로세스 할당 받은 여부, 코어의 종류, 현재 실행중인 프로세스 번호, 현재 프로세서 on/off
-    # on = True, off = False
     processor = []
     for i in range(P):
         processor.append([False, core[i], -1])
@@ -39,9 +38,6 @@ def HRRN(inputInfo, arrivalTime, workLoad):
 
         print("---", currentTime, "초---", workLoad)
 
-        result.append([arrivalTime[:], burstTime[:], waitingTime[:],
-                      consumedPower, completed[:], workLoad[:], readyQueue[:]])
-
         # 종료할 프로세스가 있는지 확인
         for i in range(P):
             p = processor[i][2]
@@ -53,6 +49,9 @@ def HRRN(inputInfo, arrivalTime, workLoad):
                     turnaroundTime[p] = currentTime - arrivalTime[p]
                     processor[i][0] = False
                     processor[i][2] = -1
+
+        result.append([arrivalTime[:], burstTime[:], waitingTime[:],
+                      consumedPower, completed[:], workLoad[:], readyQueue[:]])
 
         if isFinished(completed):
             print("종료!")

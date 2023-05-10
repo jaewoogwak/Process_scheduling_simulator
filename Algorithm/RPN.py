@@ -46,9 +46,6 @@ def RPN(inputInfo, arrivalTime, workLoad):
 
         print("---", currentTime, "초---", workLoad)
 
-        result.append([arrivalTime[:], burstTime[:], waitingTime[:],
-                      consumedPower, completed[:], workLoad[:], readyQueue[:]])
-
         # 종료할 프로세스가 있는지 확인
         for i in range(P):
             p = processor[i][2]
@@ -61,6 +58,9 @@ def RPN(inputInfo, arrivalTime, workLoad):
                     order.append(p)
                     processor[i][0] = False
                     processor[i][2] = -1
+
+        result.append([arrivalTime[:], burstTime[:], waitingTime[:],
+                      consumedPower, completed[:], workLoad[:], readyQueue[:]])
 
         if isFinished(completed):
             print("종료!")

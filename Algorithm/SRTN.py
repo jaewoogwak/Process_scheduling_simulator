@@ -12,7 +12,6 @@ def SRTN(inputInfo, arrivalTime, workLoad):
     readyQueue = []
 
     # 프로세스 할당 받은 여부, 코어의 종류, 현재 실행중인 프로세스 번호, 현재 실행중인 프로세스 남은 workLoad 시간
-    # on = True, off = False
     processor = []
     for i in range(P):
         processor.append([False, core[i], -1, -1])
@@ -36,9 +35,6 @@ def SRTN(inputInfo, arrivalTime, workLoad):
 
         print("---", currentTime, "초---", workLoad)
 
-        result.append([arrivalTime[:], burstTime[:], waitingTime[:],
-                      consumedPower, completed[:], workLoad[:], readyQueue[:]])
-
         # 종료할 프로세스가 있는지 확인
         for i in range(P):
             p = processor[i][2]
@@ -51,6 +47,10 @@ def SRTN(inputInfo, arrivalTime, workLoad):
                     processor[i][0] = False
                     processor[i][2] = -1
                     processor[i][3] = -1
+
+        result.append([arrivalTime[:], burstTime[:], waitingTime[:],
+                      consumedPower, completed[:], workLoad[:], readyQueue[:]])
+
         if isFinished(completed):
             print("종료!")
             break
