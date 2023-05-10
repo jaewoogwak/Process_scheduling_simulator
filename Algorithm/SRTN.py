@@ -32,6 +32,7 @@ def SRTN(inputInfo, arrivalTime, workLoad):
 
     while not isFinished(completed):
         p = 0
+        res = []
 
         print("---", currentTime, "초---", workLoad)
 
@@ -48,7 +49,7 @@ def SRTN(inputInfo, arrivalTime, workLoad):
                     processor[i][2] = -1
                     processor[i][3] = -1
 
-        result.append([arrivalTime[:], burstTime[:], waitingTime[:],
+        res.append([arrivalTime[:], burstTime[:], waitingTime[:],
                       consumedPower, completed[:], workLoad[:], readyQueue[:]])
 
         if isFinished(completed):
@@ -164,6 +165,13 @@ def SRTN(inputInfo, arrivalTime, workLoad):
                 workLoad[p] = 0
 
             processor[i][3] = workLoad[p]
+            
+        runningInfo = []
+        for i in range(len(processor)):
+            runningInfo.append((i, processor[i][2]))
+
+        res.append(runningInfo)
+        result.append(res)
 
         # 현재 시간 증가
         currentTime += 1
