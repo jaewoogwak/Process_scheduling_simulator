@@ -53,21 +53,23 @@ def SPN(inputInfo, arrivalTime, workLoad):
                     processor[i][2] = -1
 
         rqTemp = []
+        rq = []
         for _ in range(readyQueue.qsize()):
             w, p = readyQueue.get()
             rqTemp.append((w, p))
+            rq.append(p)
 
         for w, p in rqTemp:
             readyQueue.put((w, p))
 
         res = [arrivalTime[:], burstTime[:], waitingTime[:],
-               consumedPower, completed[:], workLoad[:], rqTemp[:]]
+               consumedPower, completed[:], workLoad[:], rq[:]]
 
         if isFinished(completed):
             print("종료!")
             temp = [(r[0], -1) for r in runningInfo]
             res = [arrivalTime[:], burstTime[:], waitingTime[:],
-                   consumedPower, completed[:], workLoad[:], rqTemp[:], temp]
+                   consumedPower, completed[:], workLoad[:], rq[:], temp]
             result.append(res)
             break
 

@@ -57,7 +57,7 @@ if __name__ == "__main__":
 
         else:
             # 프로세스 스케줄링 실행
-            output = RPN(inputInfo, arrivalTime, workLoad)
+            output = SPN(inputInfo, arrivalTime, workLoad)
             burstTime, waitingTime, turnaroundTime, normalizedTT, consumedPower, result = output
 
             print("실행시간", burstTime)
@@ -68,3 +68,4 @@ if __name__ == "__main__":
 
             for r in range(len(result)):
                 print(r, "초", result[r])
+            print(result)
