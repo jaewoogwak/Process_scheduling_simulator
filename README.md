@@ -20,7 +20,7 @@ Operating System team project for the first semester of 2023
 
 ## 📺 UI
 
-## 🚀 Teck Stack
+## 🚀 Tech Stack
 
 -   Python3
 -   PyQt Designer
