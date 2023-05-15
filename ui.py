@@ -126,6 +126,7 @@ class Ui_Dialog(QMainWindow):
         self.pushButton_padd.clicked.connect(self.pushprocessadd)
         self.pushButton_podd.clicked.connect(self.pushprocessodd)
         self.pushButton_Run.clicked.connect(self.pushrun)
+        self.pushButton_reset.clicked.connect(self.reset)
 
     def setupUi(self, Dialog): #uisetup
         Dialog.setObjectName("Dialog")
@@ -173,6 +174,15 @@ class Ui_Dialog(QMainWindow):
         font.setPointSize(10)
         self.label_2.setFont(font)
         self.label_2.setObjectName("label_2")
+        self.pushButton_reset = QtWidgets.QPushButton(Dialog)
+        self.pushButton_reset.setGeometry(QtCore.QRect(1150, 180, 120, 40))
+        font = QtGui.QFont()
+        font.setFamily("HY헤드라인M")
+        font.setPointSize(12)
+        self.pushButton_reset.setFont(font)
+        self.pushButton_reset.setStyleSheet("\n"
+"background-color: rgb(227, 233, 239);")
+        self.pushButton_reset.setObjectName("pushButton_reset")
         self.pushButton_Run = QtWidgets.QPushButton(Dialog)
         self.pushButton_Run.setGeometry(QtCore.QRect(390, 100, 80, 40))
         font = QtGui.QFont()
@@ -262,7 +272,7 @@ class Ui_Dialog(QMainWindow):
         header = self.tableWidget_gantt.verticalHeader()
         header.setSectionResizeMode(QHeaderView.Stretch)
         self.pushButton_padd = QtWidgets.QPushButton(Dialog)
-        self.pushButton_padd.setGeometry(QtCore.QRect(140, 460, 40, 40))
+        self.pushButton_padd.setGeometry(QtCore.QRect(80, 460, 40, 40))
         font = QtGui.QFont()
         font.setFamily("HY헤드라인M")
         font.setPointSize(20)
@@ -270,7 +280,7 @@ class Ui_Dialog(QMainWindow):
         self.pushButton_padd.setStyleSheet("background-color: rgb(227, 233, 239);")
         self.pushButton_padd.setObjectName("pushButton_padd")
         self.pushButton_podd = QtWidgets.QPushButton(Dialog)
-        self.pushButton_podd.setGeometry(QtCore.QRect(190, 460, 40, 40))
+        self.pushButton_podd.setGeometry(QtCore.QRect(140, 460, 40, 40))
         font = QtGui.QFont()
         font.setFamily("HY헤드라인M")
         font.setPointSize(20)
@@ -351,6 +361,24 @@ class Ui_Dialog(QMainWindow):
         self.textEdit_time_quantum.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.textEdit_time_quantum.setObjectName("textEdit_time_quantum")
         self.textEdit_time_quantum.setAlignment(Qt.AlignCenter)
+        self.label_speed = QtWidgets.QLabel(Dialog)
+        self.label_speed.setGeometry(QtCore.QRect(200, 460, 80, 40))
+        font = QtGui.QFont()
+        font.setFamily("HY헤드라인M")
+        font.setPointSize(10)
+        self.label_speed.setFont(font)
+        self.label_speed.setObjectName("label_speed")
+        self.textEdit_speed = QtWidgets.QTextEdit(Dialog)
+        self.textEdit_speed.setGeometry(QtCore.QRect(280, 460, 80, 40))
+        font = QtGui.QFont()
+        font.setFamily("HY헤드라인M")
+        font.setPointSize(12)
+        self.textEdit_speed.setFont(font)
+        self.textEdit_speed.setStyleSheet("background-color: rgb(227, 233, 239);")
+        self.textEdit_speed.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.textEdit_speed.setObjectName("textEdit_speed")
+        self.textEdit_speed.setPlainText("2")
+        self.textEdit_speed.setAlignment(Qt.AlignCenter)
         self.textEdit_pcore = QtWidgets.QTextEdit(Dialog)
         self.textEdit_pcore.setGeometry(QtCore.QRect(80, 220, 100, 40))
         font = QtGui.QFont()
@@ -397,6 +425,7 @@ class Ui_Dialog(QMainWindow):
         self.label.setText(_translate("Dialog", "Process Scheduling Simulator"))
         self.label_2.setText(_translate("Dialog", "Algorithm"))
         self.pushButton_Run.setText(_translate("Dialog", "RUN"))
+        self.pushButton_reset.setText(_translate("Dialog", "RESET"))
         self.label_5.setText(_translate("Dialog", "Processor"))
         self.label_6.setText(_translate("Dialog", "Gantt Chart"))
         self.label_7.setText(_translate("Dialog", "Result"))
@@ -404,6 +433,7 @@ class Ui_Dialog(QMainWindow):
         self.label_9.setText(_translate("Dialog", "시간 :"))
         self.label_10.setText(_translate("Dialog", "소비 전력 :"))
         self.label_11.setText(_translate("Dialog", "Team : OhYes"))
+        self.label_speed.setText(_translate("Dialog", "Set Speed"))
         self.label_usagewatt.setText(_translate("Dialog", "watt"))
         self.label_nowtime.setText(_translate("Dialog", "time"))
         self.pushButton_padd.setText(_translate("Dialog", "+"))
@@ -412,6 +442,10 @@ class Ui_Dialog(QMainWindow):
         self.label_12.setText(_translate("Dialog", "E-CORE"))
         self.label_13.setText(_translate("Dialog", "Time Quantum"))
         self.pushButton_coreapply.setText(_translate("Dialog", "APPLY"))
+
+    def choosecolor(self, n): #색상 자동 선택함수. 반환 튜플이니까 잘쓰세요
+        index = n % 49
+        return (colors[index], text_colors[index])  
 
     def stop(self): #멈춰!!!하는 함수. 하지만 사용 안함.
         QApplication.quit()
@@ -469,26 +503,24 @@ class Ui_Dialog(QMainWindow):
         QTimer.singleShot(n, loop.quit) # msec
         loop.exec_()
 
-    def initprocess(self): #이거 안씀.
-        self.tableWidget.setColumnCount(6)
-        item = QTableWidgetItem("AT")
-        self.tableWidget_result.setHorizontalHeaderItem(0, item)
-        item = QTableWidgetItem("BT")
-        self.tableWidget_result.setHorizontalHeaderItem(1, item)
-        item = QTableWidgetItem("WT")
-        self.tableWidget_result.setHorizontalHeaderItem(2, item)
-        item = QTableWidgetItem("TT")
-        self.tableWidget_result.setHorizontalHeaderItem(3, item)
-        item = QTableWidgetItem("NTT")
-        self.tableWidget_result.setHorizontalHeaderItem(4, item)
-        item = QTableWidgetItem("DONE")
-        self.tableWidget_result.setHorizontalHeaderItem(5, item)
+    def reset(self):
+        global processnum
+        processnum = 0
+        self.tableWidget_core.setRowCount(0)
+        self.tableWidget_gantt.setRowCount(0)
+        self.tableWidget_gantt.setColumnCount(1)
+        self.tableWidget_result.setRowCount(0)
+        self.tableWidget.setRowCount(0)
+        item = QTableWidgetItem(str(processnum))
 
     def pushprocessadd(self): # + 버튼 클릭시 이벤트 담당
         global processnum
+        color,textcolor = self.choosecolor(processnum)
         self.tableWidget.setRowCount(processnum+1)
         self.tableWidget_result.setRowCount(processnum+1)
         item = QTableWidgetItem("P"+str(processnum+1))
+        item.setBackground(color)
+        item.setForeground(textcolor)
         item.setTextAlignment(Qt.AlignCenter)
         self.tableWidget.setItem(processnum,0,item)
         item = QTableWidgetItem(str(processnum+1))
@@ -501,6 +533,8 @@ class Ui_Dialog(QMainWindow):
         header.resizeSection(processnum,100)
         item = QTableWidgetItem("P"+str(processnum+1))
         item.setTextAlignment(Qt.AlignCenter)
+        item.setBackground(color)
+        item.setForeground(textcolor)
         self.tableWidget_result.setItem(processnum,0, item)
         processnum += 1
 
@@ -511,12 +545,11 @@ class Ui_Dialog(QMainWindow):
         self.tableWidget.setRowCount(processnum)
         self.tableWidget_result.setRowCount(processnum)
 
-    def choosecolor(self, n): #색상 자동 선택함수. 반환 튜플이니까 잘쓰세요
-        index = n % 49
-        return (colors[index], text_colors[index])
-
     def pushrun(self): # run 버튼 클릭시 이벤트
-        global processnum
+        global processnum, runspeed
+        speed = int(self.textEdit_speed.toPlainText())
+        speed *= speed
+        runspeed = 1000//speed
         selected_algo = self.comboBox.currentIndex()
         if selected_algo == 0:
             core = pcore + ecore
@@ -532,7 +565,8 @@ class Ui_Dialog(QMainWindow):
             print(result)
             header = self.tableWidget_gantt.horizontalHeader()
             for j in range(len(result)):
-                self.delay(100)
+                print(runspeed)
+                self.delay(runspeed)
                 item = QTableWidgetItem(str(j))
                 self.tableWidget_gantt.setColumnCount(j+2)
                 header.resizeSection(j+1,40)
@@ -592,7 +626,7 @@ class Ui_Dialog(QMainWindow):
             print(result)
             header = self.tableWidget_gantt.horizontalHeader()
             for j in range(len(result)):
-                self.delay(100)
+                self.delay(runspeed)
                 item = QTableWidgetItem(str(j))
                 self.tableWidget_gantt.setColumnCount(j+2)
                 header.resizeSection(j+1,40)
@@ -651,7 +685,7 @@ class Ui_Dialog(QMainWindow):
             print(result)
             header = self.tableWidget_gantt.horizontalHeader()
             for j in range(len(result)):
-                self.delay(100)
+                self.delay(runspeed)
                 item = QTableWidgetItem(str(j))
                 self.tableWidget_gantt.setColumnCount(j+2)
                 header.resizeSection(j+1,40)
@@ -710,7 +744,7 @@ class Ui_Dialog(QMainWindow):
             print(result)
             header = self.tableWidget_gantt.horizontalHeader()
             for j in range(len(result)):
-                self.delay(100)
+                self.delay(runspeed)
                 item = QTableWidgetItem(str(j))
                 self.tableWidget_gantt.setColumnCount(j+2)
                 header.resizeSection(j+1,40)
@@ -769,7 +803,7 @@ class Ui_Dialog(QMainWindow):
             print(result)
             header = self.tableWidget_gantt.horizontalHeader()
             for j in range(len(result)):
-                self.delay(100)
+                self.delay(runspeed)
                 item = QTableWidgetItem(str(j))
                 self.tableWidget_gantt.setColumnCount(j+2)
                 header.resizeSection(j+1,40)
@@ -828,7 +862,7 @@ class Ui_Dialog(QMainWindow):
             print(result)
             header = self.tableWidget_gantt.horizontalHeader()
             for j in range(len(result)):
-                self.delay(100)
+                self.delay(runspeed)
                 item = QTableWidgetItem(str(j))
                 self.tableWidget_gantt.setColumnCount(j+2)
                 header.resizeSection(j+1,40)
@@ -875,8 +909,8 @@ class Ui_Dialog(QMainWindow):
                         self.tableWidget_result.setItem(i,6,item)
             
 if __name__ == "__main__":
-    global pcore, ecore, processnum
-    pcore, ecore, processnum = 0,0,0
+    global pcore, ecore, processnum, runspeed
+    pcore, ecore, processnum, runspeed= 0,0,0,200
     app = QtWidgets.QApplication(sys.argv)
     Dialog = QtWidgets.QDialog()
     ui = Ui_Dialog()
